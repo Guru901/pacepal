@@ -14,7 +14,7 @@ export default function useGetUser() {
   useEffect(() => {
     const user = getUser();
 
-    if (!user || user.id.length === 0 || !localUser) {
+    if (!localUser?.id.length) {
       if (isLoading) {
         setError("loading");
       }
