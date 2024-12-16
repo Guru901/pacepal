@@ -1,16 +1,8 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { LabelList, Pie, PieChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -19,18 +11,8 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// const chartData = [
-//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-//   { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-//   { browser: "other", visitors: 90, fill: "var(--color-other)" },
-// ];
 
 const chartConfig = {
-  //   visitors: {
-  //     label: "Visitors",
-  //   },
   happy: {
     label: "Happy",
     color: "hsl(var(--chart-1))",
@@ -77,9 +59,10 @@ export function MoodChart({ userId }: { userId: string }) {
           };
 
           // Count the occurrences of each mood
-          data.data.forms.forEach((form) => {
+          data.data.forms.forEach((form: { mood: string }) => {
             const mood = form.mood;
             if (moodCounts.hasOwnProperty(mood)) {
+              // @ts-expect-error - TypeScript doesn't recognize the `hasOwnProperty` method
               moodCounts[mood]++;
             }
           });
@@ -88,6 +71,7 @@ export function MoodChart({ userId }: { userId: string }) {
           setChartData((prevData) =>
             prevData.map((item) => ({
               ...item,
+              // @ts-expect-error - TypeScript doesn't recognize the `hasOwnProperty` method
               freq: moodCounts[item.mood],
             }))
           );

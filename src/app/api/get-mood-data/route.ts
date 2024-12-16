@@ -1,6 +1,5 @@
 import { connectToDB } from "@/lib/db-connect";
 import { Form } from "@/models/form-model";
-import { User } from "@/models/user-model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

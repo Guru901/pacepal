@@ -2,7 +2,6 @@
 
 import { DailyForm } from "@/components/daily-form";
 import Navbar from "@/components/navbar";
-import { useUserStore } from "@/store/user-store";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { SleepChart } from "../(charts)/sleep-chart";
@@ -12,7 +11,7 @@ import { MoodChart } from "../(charts)/mood-chart";
 import useGetUser from "@/hooks/use-get-user";
 
 export default function Dashboard() {
-  const { localUser: user} = useGetUser();
+  const { localUser: user } = useGetUser();
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
