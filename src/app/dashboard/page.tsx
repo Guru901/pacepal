@@ -41,7 +41,7 @@ export default function Dashboard() {
     })();
   }, [user?.mongoId]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading || !user?.id) return <div>Loading...</div>;
 
   return (
     <main>

@@ -14,8 +14,10 @@ export default function useGetUser() {
   useEffect(() => {
     if (!user || user.id.length === 0 || !localUser) {
       const fetchUser = async () => {
+        const userId = user?.id;
+
         try {
-          const { data } = await axios.get(`/api/me?id=${user?.id}`);
+          const { data } = await axios.get(`/api/me?id=${userId}`);
           if (data.success === false) {
             setError("User not logged in");
             alert("login please");
