@@ -31,13 +31,9 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log(form);
-
-    const allForms = await Form.find({
+    await Form.find({
       kindeId: id,
     });
-
-    console.log(allForms);
 
     if (!form.length) {
       return NextResponse.json(

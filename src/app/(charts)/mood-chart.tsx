@@ -2,7 +2,13 @@
 
 import { LabelList, Pie, PieChart } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -44,12 +50,12 @@ export function MoodChart({ userId }: { userId: string }) {
     { mood: "productive", freq: 0, fill: "#32CD32" }, // Example color for "productive"
   ]);
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const { data } = await axios.get(`/api/get-mood-data?id=${userId}`);
 
         if (data.success) {
@@ -87,13 +93,22 @@ export function MoodChart({ userId }: { userId: string }) {
     })();
   }, [userId]);
 
-  if (loading) return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Loading...
+      </div>
+    );
 
   return (
     <Card className="flex flex-col w-[50vw]">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Mood Tracker</CardTitle>
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1 text-center sm:text-left">
+          <CardTitle>Mood Chart</CardTitle>
+          <CardDescription>Shows your mood over time</CardDescription>
+        </div>
       </CardHeader>
+
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}

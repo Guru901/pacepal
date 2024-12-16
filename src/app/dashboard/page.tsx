@@ -9,6 +9,7 @@ import { TodosChart } from "../(charts)/todos-chart";
 import { WorkChart } from "../(charts)/work-chart";
 import { MoodChart } from "../(charts)/mood-chart";
 import useGetUser from "@/hooks/use-get-user";
+import { Penalty } from "../(charts)/penalty";
 
 export default function Dashboard() {
   const { localUser: user } = useGetUser();
@@ -55,7 +56,10 @@ export default function Dashboard() {
           <SleepChart userId={String(user?.mongoId)} />
           <TodosChart userId={String(user?.mongoId)} />
           <WorkChart userId={String(user?.mongoId)} />
-          <MoodChart userId={String(user?.mongoId)} />
+          <div className="flex gap-2">
+            <MoodChart userId={String(user?.mongoId)} />
+            <Penalty userId={String(user?.mongoId)} />
+          </div>
         </div>
       )}
     </main>
