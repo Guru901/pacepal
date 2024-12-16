@@ -49,7 +49,7 @@ export default function useGetUser() {
 
       fetchUser();
     }
-  }, [user, setUser, isLoading]);
+  }, [setUser, isLoading, getUser, localUser, isAuthenticated]);
 
   return { localUser, error };
 }
