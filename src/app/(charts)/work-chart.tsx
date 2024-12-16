@@ -104,15 +104,8 @@ export function WorkChart({ userId }: { userId: string }) {
     fetchWorkData();
   }, [userId, timeRange]);
 
-  if (isLoading) {
-    return (
-      <Card>
-        <CardContent className="flex justify-center items-center h-64">
-          <p>Loading work hours data...</p>
-        </CardContent>
-      </Card>
-    );
-  }
+
+  if (isLoading)return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
 
   return (
     <Card>

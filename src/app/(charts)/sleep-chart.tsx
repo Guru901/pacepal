@@ -46,6 +46,7 @@ export function SleepChart({ userId }: { userId: string }) {
       desired_sleep_hrs: 0,
     },
   ]);
+  const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState("30d");
 
   //@ts-expect-error FIXME
@@ -71,6 +72,7 @@ export function SleepChart({ userId }: { userId: string }) {
     (async () => {
       try {
         // Fetch the sleep data from the API
+        setLoading(true)
         const { data } = await axios.get(`/api/get-sleep-data?id=${userId}`);
         if (data.success) {
           // Filter and transform the data based on the selected time range
@@ -90,9 +92,13 @@ export function SleepChart({ userId }: { userId: string }) {
         }
       } catch (error) {
         console.error("Error fetching sleep data:", error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [userId, timeRange]);
+
+  if (loading) return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
 
   return (
     <Card>

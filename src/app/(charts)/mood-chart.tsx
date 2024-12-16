@@ -44,9 +44,12 @@ export function MoodChart({ userId }: { userId: string }) {
     { mood: "productive", freq: 0, fill: "#32CD32" }, // Example color for "productive"
   ]);
 
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const { data } = await axios.get(`/api/get-mood-data?id=${userId}`);
 
         if (data.success) {
@@ -78,9 +81,13 @@ export function MoodChart({ userId }: { userId: string }) {
         }
       } catch (error) {
         console.error("Error fetching mood data:", error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [userId]);
+
+  if (loading) return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
 
   return (
     <Card className="flex flex-col w-[50vw]">

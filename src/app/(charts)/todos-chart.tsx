@@ -44,6 +44,7 @@ type ChartData = {
 export function TodosChart({ userId }: { userId: string }) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [timeRange, setTimeRange] = useState("30d");
+  const [loading, setLoading] = useState(true)
 
   const filterDataByTimeRange = (
     data: TodoData[],
@@ -70,6 +71,7 @@ export function TodosChart({ userId }: { userId: string }) {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const { data } = await axios.get(`/api/get-todos-data?id=${userId}`);
         if (data.success) {
           // Map backend keys to expected keys
@@ -100,9 +102,13 @@ export function TodosChart({ userId }: { userId: string }) {
         }
       } catch (error) {
         console.error("Error fetching todos data:", error);
+      } finally {
+        setLoading(false)
       }
     })();
   }, [userId, timeRange]);
+
+  if (loading) return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
 
   return (
     <Card>
