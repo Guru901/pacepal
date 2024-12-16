@@ -14,7 +14,7 @@ export default function useGetUser() {
   useEffect(() => {
     if (!user || user.id.length === 0 || !localUser) {
       const fetchUser = async () => {
-        const userId = user?.id;
+        const userId = await user?.id;
 
         try {
           const { data } = await axios.get(`/api/me?id=${userId}`);

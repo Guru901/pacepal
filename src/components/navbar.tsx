@@ -9,6 +9,7 @@ import {
 import { Button } from "./ui/button";
 import { useUserStore } from "@/store/user-store";
 import { ModeToggle } from "./theme-toggle";
+import Link from "next/link";
 
 export default function Navbar() {
   const { isAuthenticated } = useKindeAuth();
@@ -21,7 +22,9 @@ export default function Navbar() {
         <ModeToggle />
         {isAuthenticated ? (
           <>
-            <Button className="px-6">Profile</Button>
+            <Link href="/dashboard">
+              <Button className="px-6">Dashboard</Button>
+            </Link>
             <LogoutLink>
               <Button
                 onClick={() => {
