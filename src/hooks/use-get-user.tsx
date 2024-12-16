@@ -9,10 +9,18 @@ export default function useGetUser() {
   const { user: localUser, setUser } = useUserStore();
   const [error, setError] = useState("");
 
-  const { user } = useKindeAuth();
+  const { getUser, isLoading, isAuthenticated } = useKindeAuth();
 
   useEffect(() => {
+    const user = getUser();
+
     if (!user || user.id.length === 0 || !localUser) {
+      if (isLoading) {
+        setError("loading");
+      }
+      if (!isAuthenticated) {
+        setError("not logged in");
+      }
       const fetchUser = async () => {
         const userId = (await localUser?.id) || (await user?.id);
 
@@ -41,7 +49,7 @@ export default function useGetUser() {
 
       fetchUser();
     }
-  }, [user, setUser]);
+  }, [user, setUser, isLoading]);
 
   return { localUser, error };
 }
