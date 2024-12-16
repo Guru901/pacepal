@@ -24,10 +24,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PlusCircle, Trash2 } from "lucide-react";
-import { useUserStore } from "@/store/user-store";
 import { useRouter } from "next/navigation";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import axios from "axios";
+import useGetUser from "@/hooks/use-get-user";
 
 const slotSchema = z.object({
   name: z.string().min(1, "Slot name is required"),
@@ -52,7 +52,6 @@ export function OnboardingForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const { setUser } = useUserStore();
 
   const router = useRouter();
 
@@ -75,6 +74,8 @@ export function OnboardingForm() {
     control,
     name: "slots",
   });
+
+  const { localUser } = useGetUser();
 
   const watchForm = watch();
 
@@ -119,26 +120,13 @@ export function OnboardingForm() {
       if (!user.id) return;
       if (!user.given_name) return;
 
-      const { data } = await axios.get(`/api/me?id=${user?.id}`);
-
-      if (data.success) {
-        if (data.user.isOnBoarded) {
-          setUser({
-            email: user?.email,
-            id: user?.id,
-            picture: user?.picture as string,
-            given_name: user?.given_name,
-            isOnBoarded: false,
-            slots: data.user.slots,
-            desiredSleepHours: data.user.desiredSleepHours,
-            mongoId: data.user._id,
-          });
-          router.push("/dashboard");
-        }
+      if (localUser?.isOnBoarded) {
+        router.push(`/dashboard`);
       }
+
       setLoading(false);
     })();
-  }, [user]);
+  }, [user, localUser]);
 
   if (!isAuthenticated || isLoading || loading) {
     return <div>Loading...</div>;

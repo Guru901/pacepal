@@ -22,7 +22,7 @@ export default function useGetUser() {
         setError("not logged in");
       }
       const fetchUser = async () => {
-        const userId = (await localUser?.id) || (await user?.id);
+        const userId = localUser?.id || user?.id;
 
         try {
           const { data } = await axios.get(`/api/me?id=${userId}`);
