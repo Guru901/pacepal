@@ -37,7 +37,7 @@ export default function Me() {
 
   useEffect(() => {
     if (!localUser?.id) {
-      setLoading(false);
+      setLoading(true);
       return;
     }
 
