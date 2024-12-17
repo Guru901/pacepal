@@ -277,7 +277,9 @@ export function OnboardingForm() {
             </div>
           )}
           <DialogFooter>
-            <Button onClick={handleFinalSubmit}>Submit Plan</Button>
+            <Button disabled={loading} onClick={handleFinalSubmit}>
+              {loading ? "Submitting..." : "Submit Plan"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

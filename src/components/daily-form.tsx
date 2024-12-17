@@ -24,6 +24,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import { useUserStore } from "@/store/user-store";
+import { useState } from "react";
 
 const formSchema = z.object({
   followedSchedule: z.enum(["yes", "no"]),
@@ -45,6 +46,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export function DailyForm({ hrs }: { hrs: number }) {
   const { user } = useUserStore();
+  const [loading, setLoading] = useState(true);
 
   const {
     control,
@@ -67,6 +69,7 @@ export function DailyForm({ hrs }: { hrs: number }) {
   });
 
   async function onSubmit(formData: FormData) {
+    setLoading(true);
     if (!user?.mongoId) return;
 
     try {
@@ -80,6 +83,8 @@ export function DailyForm({ hrs }: { hrs: number }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -332,8 +337,12 @@ export function DailyForm({ hrs }: { hrs: number }) {
         </form>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={handleSubmit(onSubmit)}>
-          Submit Reflection
+        <Button
+          className="w-full"
+          onClick={handleSubmit(onSubmit)}
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit Reflection"}
         </Button>
       </CardFooter>
     </Card>
