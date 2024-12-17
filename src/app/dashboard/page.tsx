@@ -10,6 +10,8 @@ import { WorkChart } from "../(charts)/work-chart";
 import { MoodChart } from "../(charts)/mood-chart";
 import useGetUser from "@/hooks/use-get-user";
 import { Penalty } from "../(charts)/penalty";
+import { DistractionsChart } from "../(charts)/distractions-chart";
+import { Loader } from "@/components/Loading";
 
 export default function Dashboard() {
   const { localUser: user } = useGetUser();
@@ -42,7 +44,7 @@ export default function Dashboard() {
     })();
   }, [user?.mongoId]);
 
-  if (loading || !user?.id) return <div>Loading...</div>;
+  if (loading || !user?.id) return <Loader />;
 
   return (
     <main>
@@ -60,6 +62,7 @@ export default function Dashboard() {
             <MoodChart userId={String(user?.mongoId)} />
             <Penalty userId={String(user?.mongoId)} />
           </div>
+          <DistractionsChart userId={String(user?.mongoId)} />
         </div>
       )}
     </main>

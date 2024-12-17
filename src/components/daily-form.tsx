@@ -293,7 +293,9 @@ export function DailyForm({ hrs }: { hrs: number }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="distractionsList">If yes, list them:</Label>
+            <Label htmlFor="distractionsList">
+              If yes, list them: (sperate with comma)
+            </Label>
             <Controller
               name="distractionsList"
               control={control}

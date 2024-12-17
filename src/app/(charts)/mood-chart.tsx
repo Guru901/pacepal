@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Loader } from "@/components/Loading";
 
 const chartConfig = {
   happy: {
@@ -93,13 +94,6 @@ export function MoodChart({ userId }: { userId: string }) {
     })();
   }, [userId]);
 
-  if (loading)
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        Loading...
-      </div>
-    );
-
   return (
     <Card className="flex flex-col w-[50vw]">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
@@ -108,30 +102,33 @@ export function MoodChart({ userId }: { userId: string }) {
           <CardDescription>Shows your mood over time</CardDescription>
         </div>
       </CardHeader>
-
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
-        >
-          <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" hideLabel />}
-            />
-            <Pie data={chartData} dataKey="freq" nameKey="mood">
-              <LabelList
-                dataKey="mood"
-                className="fill-background"
-                stroke="none"
-                fontSize={12}
-                formatter={(value: keyof typeof chartConfig) =>
-                  chartConfig[value]?.label
-                }
+      {loading ? (
+        <Loader />
+      ) : (
+        <CardContent className="flex-1 pb-0">
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
+          >
+            <PieChart>
+              <ChartTooltip
+                content={<ChartTooltipContent nameKey="visitors" hideLabel />}
               />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
-      </CardContent>
+              <Pie data={chartData} dataKey="freq" nameKey="mood">
+                <LabelList
+                  dataKey="mood"
+                  className="fill-background"
+                  stroke="none"
+                  fontSize={12}
+                  formatter={(value: keyof typeof chartConfig) =>
+                    chartConfig[value]?.label
+                  }
+                />
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+        </CardContent>
+      )}
     </Card>
   );
 }

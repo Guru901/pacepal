@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
+import { Loader } from "@/components/Loading";
 
 const chartConfig = {
   actual_sleeping_hrs: {
@@ -46,7 +47,7 @@ export function SleepChart({ userId }: { userId: string }) {
       desired_sleep_hrs: 0,
     },
   ]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("30d");
 
   //@ts-expect-error FIXME
@@ -72,7 +73,7 @@ export function SleepChart({ userId }: { userId: string }) {
     (async () => {
       try {
         // Fetch the sleep data from the API
-        setLoading(true)
+        setLoading(true);
         const { data } = await axios.get(`/api/get-sleep-data?id=${userId}`);
         if (data.success) {
           // Filter and transform the data based on the selected time range
@@ -97,8 +98,6 @@ export function SleepChart({ userId }: { userId: string }) {
       }
     })();
   }, [userId, timeRange]);
-
-  if (loading) return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
 
   return (
     <Card>
@@ -129,97 +128,101 @@ export function SleepChart({ userId }: { userId: string }) {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient
-                id="fillActualSleepingHrs"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-actual_sleeping_hrs)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-actual_sleeping_hrs)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient
-                id="fillDesiredSleepHrs"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desired_sleep_hrs)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desired_sleep_hrs)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
-            <Area
-              dataKey="desired_sleep_hrs"
-              type="natural"
-              fill="url(#fillDesiredSleepHrs)"
-              stroke="var(--color-desired_sleep_hrs)"
-              stackId="a"
-            />
-            <Area
-              dataKey="actual_sleeping_hrs"
-              type="natural"
-              fill="url(#fillActualSleepingHrs)"
-              stroke="var(--color-actual_sleeping_hrs)"
-              stackId="a"
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
+      {loading ? (
+        <Loader />
+      ) : (
+        <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full"
+          >
+            <AreaChart data={chartData}>
+              <defs>
+                <linearGradient
+                  id="fillActualSleepingHrs"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-actual_sleeping_hrs)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-actual_sleeping_hrs)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+                <linearGradient
+                  id="fillDesiredSleepHrs"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-desired_sleep_hrs)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-desired_sleep_hrs)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={(value) => {
+                      return new Date(value).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      });
+                    }}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Area
+                dataKey="desired_sleep_hrs"
+                type="natural"
+                fill="url(#fillDesiredSleepHrs)"
+                stroke="var(--color-desired_sleep_hrs)"
+                stackId="a"
+              />
+              <Area
+                dataKey="actual_sleeping_hrs"
+                type="natural"
+                fill="url(#fillActualSleepingHrs)"
+                stroke="var(--color-actual_sleeping_hrs)"
+                stackId="a"
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+            </AreaChart>
+          </ChartContainer>
+        </CardContent>
+      )}
     </Card>
   );
 }

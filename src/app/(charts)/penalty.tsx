@@ -1,3 +1,4 @@
+import { Loader } from "@/components/Loading";
 import {
   Card,
   CardContent,
@@ -28,13 +29,6 @@ export function Penalty({ userId }: { userId: string }) {
     })();
   }, []);
 
-  if (loading)
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        Loading...
-      </div>
-    );
-
   return (
     <Card className="w-[50vw]">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row h-[25%]">
@@ -45,9 +39,13 @@ export function Penalty({ userId }: { userId: string }) {
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="w-full h-[75%] flex justify-center items-center">
-        <h1 className="text-4xl">{penalty}</h1>
-      </CardContent>
+      {loading ? (
+        <Loader />
+      ) : (
+        <CardContent className="w-full h-[75%] flex justify-center items-center">
+          <h1 className="text-4xl">{penalty}</h1>
+        </CardContent>
+      )}
     </Card>
   );
 }
