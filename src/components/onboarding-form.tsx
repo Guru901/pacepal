@@ -108,7 +108,7 @@ export function OnboardingForm() {
         router.push("/dashboard");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

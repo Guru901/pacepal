@@ -18,13 +18,20 @@ export default function Navbar() {
   return (
     <header className="flex justify-between items-center py-4 px-8">
       <h1 className="text-xl">PacePal</h1>
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         <ModeToggle />
         {isAuthenticated ? (
           <>
-            <Link href="/dashboard">
-              <Button className="px-6">Dashboard</Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/dashboard">
+                <Button className="px-6">Dashboard</Button>
+              </Link>
+              <Link href="/me">
+                <Button variant={"secondary"} className="px-6">
+                  Profile
+                </Button>
+              </Link>
+            </div>
             <LogoutLink>
               <Button
                 onClick={() => {

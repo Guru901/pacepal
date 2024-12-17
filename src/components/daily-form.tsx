@@ -82,7 +82,7 @@ export function DailyForm({ hrs }: { hrs: number }) {
         location.reload();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }

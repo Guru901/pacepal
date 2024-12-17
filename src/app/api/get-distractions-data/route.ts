@@ -22,12 +22,8 @@ export async function GET(request: NextRequest) {
       createdBy: id,
     }).select("distractionsList createdAt");
 
-    console.log(forms);
-
     forms.forEach((form: { distractionsList: string }) => {
       form.distractionsList.split(",").forEach((distraction) => {
-        console.log(distraction);
-        console.log(distractions);
         distractions.push(distraction.trim().replaceAll(" ", ""));
       });
     });
