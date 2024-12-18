@@ -119,11 +119,11 @@ export function OnboardingForm() {
       if (!user.email) return;
       if (!user.id) return;
       if (!user.given_name) return;
+
       if (localUser?.isOnBoarded) {
         router.push(`/dashboard`);
+        setLoading(false);
       }
-
-      setLoading(false);
     })();
   }, [user, localUser, router]);
 
