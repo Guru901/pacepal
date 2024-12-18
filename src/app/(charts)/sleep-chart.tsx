@@ -148,7 +148,7 @@ export function SleepChart({ userId }: { userId: string }) {
                   <stop
                     offset="5%"
                     stopColor="var(--color-actual_sleeping_hrs)"
-                    stopOpacity={0.8}
+                    stopOpacity={0.9}
                   />
                   <stop
                     offset="95%"

@@ -104,8 +104,12 @@ export function WorkChart({ userId }: { userId: string }) {
     fetchWorkData();
   }, [userId, timeRange]);
 
-
-  if (isLoading)return <div className="w-full h-full flex justify-center items-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Loading...
+      </div>
+    );
 
   return (
     <Card>
@@ -228,6 +232,7 @@ export function WorkChart({ userId }: { userId: string }) {
                         type="natural"
                         fill="url(#fillActualWorkingHrs)"
                         stroke="var(--color-actual_working_hrs)"
+                        stackId="a"
                       />
                       <Area
                         dataKey={(entry) =>
