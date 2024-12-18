@@ -119,16 +119,19 @@ export function OnboardingForm() {
       if (!user.email) return;
       if (!user.id) return;
       if (!user.given_name) return;
-
       if (localUser?.isOnBoarded) {
         router.push(`/dashboard`);
       }
 
       setLoading(false);
     })();
-  }, [user, localUser]);
+  }, [user, localUser, router]);
 
-  if (!isAuthenticated || isLoading || loading) {
+  if (!isAuthenticated || isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (loading) {
     return <div>Loading...</div>;
   }
 
