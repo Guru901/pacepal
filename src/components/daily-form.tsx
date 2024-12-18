@@ -46,7 +46,6 @@ type FormData = z.infer<typeof formSchema>;
 
 export function DailyForm({ hrs }: { hrs: number }) {
   const { user } = useUserStore();
-  const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -70,7 +69,6 @@ export function DailyForm({ hrs }: { hrs: number }) {
   });
 
   async function onSubmit(formData: FormData) {
-    setLoading(true);
     setIsSubmitting(true);
     if (!user?.mongoId) return;
 
@@ -83,10 +81,11 @@ export function DailyForm({ hrs }: { hrs: number }) {
       if (data.success) {
         location.reload();
       }
+      setIsSubmitting(false);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
+      alert("Error submitting reflection. Please try again.");
+      setIsSubmitting(false);
     }
   }
 
