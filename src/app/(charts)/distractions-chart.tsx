@@ -17,12 +17,14 @@ import { LabelList, Pie, PieChart } from "recharts";
 
 // Helper function to generate colors dynamically
 function generateColors(count: number) {
-  return Array.from({ length: count }, (_, i) => {
+  const colors = [];
+  for (let i = 0; i < count; i++) {
     const hue = (i * 360) / count;
-    return `hsl(${hue}, 70%, 60%)`; // Using HSL for even color distribution
-  });
+    const color = `hsl(${hue}, 96.1%, 40.4%)`;
+    colors.push(color);
+  }
+  return colors;
 }
-
 export function DistractionsChart({ userId }: { userId: string }) {
   const [loading, setLoading] = useState(true);
   const [distractions, setDistractions] = useState<{ [key: string]: number }>(

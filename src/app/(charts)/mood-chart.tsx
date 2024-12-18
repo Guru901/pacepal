@@ -44,11 +44,11 @@ const chartConfig = {
 
 export function MoodChart({ userId }: { userId: string }) {
   const [chartData, setChartData] = useState([
-    { mood: "happy", freq: 0, fill: "#FFD700" }, // Example color for "happy"
-    { mood: "tired", freq: 0, fill: "#808080" }, // Example color for "tired"
-    { mood: "neutral", freq: 0, fill: "#ADD8E6" }, // Example color for "neutral"
-    { mood: "stressed", freq: 0, fill: "#FF6347" }, // Example color for "stressed"
-    { mood: "productive", freq: 0, fill: "#32CD32" }, // Example color for "productive"
+    { mood: "happy", freq: 0, fill: "#2662D9" }, // Example color for "happy"
+    { mood: "tired", freq: 0, fill: "#2EB88A" }, // Example color for "tired"
+    { mood: "neutral", freq: 0, fill: "#E88C30" }, // Example color for "neutral"
+    { mood: "stressed", freq: 0, fill: "#E23670" }, // Example color for "stressed"
+    { mood: "productive", freq: 0, fill: "#E88C30" }, // Example color for "productive"
   ]);
 
   const [loading, setLoading] = useState(true);
@@ -119,7 +119,7 @@ export function MoodChart({ userId }: { userId: string }) {
                   dataKey="mood"
                   className="fill-background"
                   stroke="none"
-                  fontSize={12}
+                  fontSize={14}
                   formatter={(value: keyof typeof chartConfig) =>
                     chartConfig[value]?.label
                   }
