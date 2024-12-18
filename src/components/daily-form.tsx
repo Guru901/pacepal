@@ -47,6 +47,7 @@ type FormData = z.infer<typeof formSchema>;
 export function DailyForm({ hrs }: { hrs: number }) {
   const { user } = useUserStore();
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     control,
@@ -70,6 +71,7 @@ export function DailyForm({ hrs }: { hrs: number }) {
 
   async function onSubmit(formData: FormData) {
     setLoading(true);
+    setIsSubmitting(true);
     if (!user?.mongoId) return;
 
     try {
@@ -340,9 +342,9 @@ export function DailyForm({ hrs }: { hrs: number }) {
         <Button
           className="w-full"
           onClick={handleSubmit(onSubmit)}
-          disabled={loading}
+          disabled={isSubmitting}
         >
-          {loading ? "Submitting..." : "Submit Reflection"}
+          {isSubmitting ? "Submitting..." : "Submit Reflection"}
         </Button>
       </CardFooter>
     </Card>
