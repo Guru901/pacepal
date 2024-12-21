@@ -148,7 +148,7 @@ export function SleepChart({ userId }: { userId: string }) {
                   <stop
                     offset="5%"
                     stopColor="var(--color-actual_sleeping_hrs)"
-                    stopOpacity={0.9}
+                    stopOpacity={0.8}
                   />
                   <stop
                     offset="95%"
@@ -164,9 +164,9 @@ export function SleepChart({ userId }: { userId: string }) {
                   y2="1"
                 >
                   <stop
-                    offset="5%"
+                    offset="30%"
                     stopColor="var(--color-desired_sleep_hrs)"
-                    stopOpacity={0.8}
+                    stopOpacity={1}
                   />
                   <stop
                     offset="95%"
@@ -216,7 +216,6 @@ export function SleepChart({ userId }: { userId: string }) {
                 type="natural"
                 fill="url(#fillActualSleepingHrs)"
                 stroke="var(--color-actual_sleeping_hrs)"
-                stackId="a"
               />
               <ChartLegend content={<ChartLegendContent />} />
             </AreaChart>
