@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <header className="flex justify-between items-center py-4 px-8">
-      <h1 className="text-xl">PacePal</h1>
+      <Link className="text-xl" href="/">PacePal</Link>
       <div className="flex gap-4">
         <ModeToggle />
         {isAuthenticated ? (
