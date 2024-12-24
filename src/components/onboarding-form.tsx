@@ -105,7 +105,7 @@ export function OnboardingForm() {
       });
 
       if (data.success) {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (error) {
       console.error(error);
@@ -121,7 +121,7 @@ export function OnboardingForm() {
       if (!user.given_name) return;
 
       if (localUser?.isOnBoarded) {
-        router.push(`/dashboard`);
+        router.push(`/`);
         setLoading(false);
       }
     })();

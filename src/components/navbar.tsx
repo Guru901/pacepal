@@ -22,16 +22,9 @@ export default function Navbar() {
         <ModeToggle />
         {isAuthenticated ? (
           <>
-            <div className="flex gap-2">
-              <Link href="/dashboard">
-                <Button className="px-6">Dashboard</Button>
-              </Link>
-              <Link href="/me">
-                <Button variant={"secondary"} className="px-6">
-                  Profile
-                </Button>
-              </Link>
-            </div>
+            <Link href="/me">
+              <Button className="px-6">Profile</Button>
+            </Link>
             <LogoutLink>
               <Button
                 onClick={() => {
