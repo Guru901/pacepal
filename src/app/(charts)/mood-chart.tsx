@@ -30,7 +30,7 @@ const chartConfig = {
   },
   neutral: {
     label: "Neutral",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-5))",
   },
   stressed: {
     label: "Stressed",
@@ -48,7 +48,7 @@ export function MoodChart({ userId }: { userId: string }) {
     { mood: "tired", freq: 0, fill: "#2EB88A" }, // Example color for "tired"
     { mood: "neutral", freq: 0, fill: "#E88C30" }, // Example color for "neutral"
     { mood: "stressed", freq: 0, fill: "#E23670" }, // Example color for "stressed"
-    { mood: "productive", freq: 0, fill: "#E88C30" }, // Example color for "productive"
+    { mood: "productive", freq: 0, fill: "#9062cd" }, // Example color for "productive"
   ]);
 
   const [loading, setLoading] = useState(true);
@@ -110,7 +110,7 @@ export function MoodChart({ userId }: { userId: string }) {
             config={chartConfig}
             className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
           >
-            <PieChart>
+            <PieChart width={7300} height={250}>
               <ChartTooltip
                 content={<ChartTooltipContent nameKey="visitors" hideLabel />}
               />

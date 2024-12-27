@@ -7,7 +7,9 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
+    const distractionsArray: string[] = [];
     const distractions: string[] = [];
+
 
     if (!id) {
       return NextResponse.json(
@@ -24,9 +26,15 @@ export async function GET(request: NextRequest) {
 
     forms.forEach((form: { distractionsList: string }) => {
       form.distractionsList.split(",").forEach((distraction) => {
-        distractions.push(distraction.trim().replaceAll(" ", ""));
+        distractionsArray.push(distraction.trim().replaceAll(" ", ""));
       });
     });
+
+    distractionsArray.forEach((distraction) => {
+      if (distraction !== "") {
+        distractions.push(distraction)
+      }
+    })
 
     if (!forms.length) {
       return NextResponse.json(
@@ -38,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, data: { distractions } },
+      { success: true, data: { distractions: distractions } },
       {
         status: 200,
       }
