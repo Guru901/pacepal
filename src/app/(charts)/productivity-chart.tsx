@@ -44,7 +44,7 @@ export function ProductivityChart({userId}: { userId: string }) {
                 if (data.success) {
                     // Set productivity data directly
                     setData(
-                        data.data.productivityData.map((item: { date: string; productivity: string }) => ({
+                        data.data.productivityData.map((item: { date: string; }) => ({
                             ...item,
                             date: item.date.split("/").reverse().join("-"), // Convert to YYYY-MM-DD for consistent formatting
                         }))
