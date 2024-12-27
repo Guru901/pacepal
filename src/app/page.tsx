@@ -12,6 +12,7 @@ import { WorkChart } from "./(charts)/work-chart";
 import { MoodChart } from "./(charts)/mood-chart";
 import { Penalty } from "./(charts)/penalty";
 import { DistractionsChart } from "./(charts)/distractions-chart";
+import {ProductivityChart} from "@/app/(charts)/productivity-chart";
 
 export default function Dashboard() {
   const { localUser: user } = useGetUser();
@@ -54,17 +55,21 @@ export default function Dashboard() {
           <DailyForm hrs={Number(user?.desiredSleepHours)} />
         </div>
       ) : (
-        <div className="flex flex-col gap-2 mx-4">
-          <SleepChart userId={String(user?.mongoId)} />
-          <TodosChart userId={String(user?.mongoId)} />
-          <WorkChart userId={String(user?.mongoId)} />
-          <div className="flex gap-2">
-            <MoodChart userId={String(user?.mongoId)} />
-            <Penalty userId={String(user?.mongoId)} />
-          </div>
-          <DistractionsChart userId={String(user?.mongoId)} />
-        </div>
-      )}
-    </main>
-  );
-}
+          <div className="flex flex-col gap-2 mx-4">
+            <SleepChart userId={String(user?.mongoId)}/>
+            <TodosChart userId={String(user?.mongoId)}/>
+            <WorkChart userId={String(user?.mongoId)}/>
+            <div className="flex gap-2">
+              <MoodChart userId={String(user?.mongoId)}/>
+              <Penalty userId={String(user?.mongoId)}/>
+            </div>
+
+            <div className="flex gap-2">
+              <DistractionsChart userId={String(user?.mongoId)}/>
+              <ProductivityChart userId={String(user?.mongoId)}/>
+            </div>
+            </div>
+            )}
+          </main>
+      );
+      }
