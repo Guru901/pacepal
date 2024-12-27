@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import {Bar, BarChart, CartesianGrid, XAxis} from "recharts";
 
 import {
     Card,
@@ -16,8 +16,9 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
+import {Loader} from "@/components/Loading";
 
 const chartConfig = {
     views: {
@@ -29,7 +30,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export function ProductivityChart({ userId }: { userId: string }) {
+export function ProductivityChart({userId}: { userId: string }) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
@@ -37,13 +38,13 @@ export function ProductivityChart({ userId }: { userId: string }) {
         (async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get(
+                const {data} = await axios.get(
                     `/api/get-productivity-data?id=${userId}`
                 );
                 if (data.success) {
                     // Set productivity data directly
                     setData(
-                        data.data.productivityData.map((item: any) => ({
+                        data.data.productivityData.map((item: { date: string; }) => ({
                             ...item,
                             date: item.date.split("/").reverse().join("-"), // Convert to YYYY-MM-DD for consistent formatting
                         }))
@@ -68,53 +69,57 @@ export function ProductivityChart({ userId }: { userId: string }) {
                 </div>
             </CardHeader>
             <CardContent className="px-2 sm:p-6">
-                <ChartContainer
-                    config={chartConfig}
-                    className="aspect-auto h-[250px] w-full"
-                >
-                    <BarChart
-                        accessibilityLayer
-                        data={data}
-                        margin={{
-                            left: 12,
-                            right: 12,
-                        }}
+                {loading ? (
+                    <Loader/>
+                ) : (
+                    <ChartContainer
+                        config={chartConfig}
+                        className="aspect-auto h-[250px] w-full"
                     >
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="date"
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            minTickGap={32}
-                            interval={0} // Ensures all ticks are shown
-                            tickFormatter={(value) => {
-                                const [year, month, day] = value.split("-");
-                                return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                });
+                        <BarChart
+                            accessibilityLayer
+                            data={data}
+                            margin={{
+                                left: 12,
+                                right: 12,
                             }}
-                        />
-                        <ChartTooltip
-                            content={
-                                <ChartTooltipContent
-                                    className="w-[150px]"
-                                    nameKey="views"
-                                    labelFormatter={(value) => {
-                                        const [year, month, day] = value.split("-");
-                                        return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                            year: "numeric",
-                                        });
-                                    }}
-                                />
-                            }
-                        />
-                        <Bar dataKey={"productivity"} fill={`var(--color-productivity)`} />
-                    </BarChart>
-                </ChartContainer>
+                        >
+                            <CartesianGrid vertical={false}/>
+                            <XAxis
+                                dataKey="date"
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={8}
+                                minTickGap={32}
+                                interval={0} // Ensures all ticks are shown
+                                tickFormatter={(value) => {
+                                    const [year, month, day] = value.split("-");
+                                    return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                    });
+                                }}
+                            />
+                            <ChartTooltip
+                                content={
+                                    <ChartTooltipContent
+                                        className="w-[150px]"
+                                        nameKey="views"
+                                        labelFormatter={(value) => {
+                                            const [year, month, day] = value.split("-");
+                                            return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                                year: "numeric",
+                                            });
+                                        }}
+                                    />
+                                }
+                            />
+                            <Bar dataKey={"productivity"} fill={`var(--color-productivity)`}/>
+                        </BarChart>
+                    </ChartContainer>
+                )}
             </CardContent>
         </Card>
     );
