@@ -42,7 +42,6 @@ const chartConfig = {
 export function WorkChart({userId}: { userId: string }) {
     const [desiredWorkHrs, setDesiredWorkHrs] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [timeRange, setTimeRange] = useState("30d");
     const [loading, setisLoading] = useState(true);
 
     useEffect(() => {
@@ -50,7 +49,7 @@ export function WorkChart({userId}: { userId: string }) {
             try {
                 setisLoading(true);
                 const {data} = await axios.get(
-                    `/api/get-work-data?id=${userId}&range=${timeRange}`
+                    `/api/get-work-data?id=${userId}`
                 );
 
                 if (data.success) {
@@ -103,7 +102,7 @@ export function WorkChart({userId}: { userId: string }) {
         };
 
         fetchWorkData();
-    }, [userId, timeRange]);
+    }, [userId]);
 
 
     return (
@@ -122,28 +121,9 @@ export function WorkChart({userId}: { userId: string }) {
                                     <div className="grid flex-1 gap-1 text-center sm:text-left">
                                         <CardTitle>{item.name} Hours Chart</CardTitle>
                                         <CardDescription>
-                                            Showing Working hours for the selected time range
+                                            Showing last 30 entries of a particular slot
                                         </CardDescription>
                                     </div>
-                                    <Select value={timeRange} onValueChange={setTimeRange}>
-                                        <SelectTrigger
-                                            className="w-[160px] rounded-lg sm:ml-auto"
-                                            aria-label="Select a value"
-                                        >
-                                            <SelectValue placeholder="Last 30 days"/>
-                                        </SelectTrigger>
-                                        <SelectContent className="rounded-xl">
-                                            <SelectItem value="90d" className="rounded-lg">
-                                                Last 3 months
-                                            </SelectItem>
-                                            <SelectItem value="30d" className="rounded-lg">
-                                                Last 30 days
-                                            </SelectItem>
-                                            <SelectItem value="7d" className="rounded-lg">
-                                                Last 7 days
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
                                 </CardHeader>
                                 <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
                                     {chartData.length > 0 ? (
