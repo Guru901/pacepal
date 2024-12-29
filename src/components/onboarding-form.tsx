@@ -98,7 +98,6 @@ export function OnboardingForm() {
 
   async function handleFinalSubmit() {
     try {
-      console.log(formData);
       setBtnLoading(true);
       const { data } = await axios.post("/api/onboard-user", {
         email: user?.email,

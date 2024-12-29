@@ -38,12 +38,11 @@ export async function GET(request: NextRequest) {
     );
 
     if (!forms.length) {
-      return NextResponse.json(
-        { message: "User not found", success: false },
-        {
-          status: 404,
-        }
-      );
+      return NextResponse.json({
+        message: "Forms not found",
+        success: true,
+        data: { forms: [], desiredSleepHours: [] },
+      });
     }
 
     return NextResponse.json(

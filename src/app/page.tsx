@@ -58,7 +58,6 @@ export default function Dashboard() {
             hrs={Number(
               user.versions.map((version) => {
                 if (version.versionName === selectedVersion) {
-                  console.log(version);
                   return version.data.desiredSleepHours;
                 }
               })

@@ -26,28 +26,35 @@ export async function GET(request: NextRequest) {
 
     const user = await User.findById(id);
 
-    const desiredWorkingHours = user?.versions?.map(
-      (version: {
-        versionName: string | null;
-        data: { slots: { name: string; hours: number }[] };
-      }) => {
-        if (version.versionName === versionFromClient) {
-          return version.data?.slots;
+    const desiredWorkingHours = user?.versions
+      ?.map(
+        (version: {
+          versionName: string;
+          data: { slots: { name: string; hours: number }[] };
+        }) => {
+          if (version.versionName === versionFromClient) {
+            return version.data.slots;
+          }
+          return null;
         }
-      }
-    );
+      )
+      .filter((slots: { name: string; hours: number }[]) => {
+        return slots !== null;
+      });
+
+    const singleDesiredWorkingHours =
+      desiredWorkingHours.length > 0 ? [desiredWorkingHours[0]] : [];
 
     if (!forms.length) {
-      return NextResponse.json(
-        { message: "User not found", success: false },
-        {
-          status: 404,
-        }
-      );
+      return NextResponse.json({
+        message: "Forms not found",
+        success: true,
+        data: { forms: [], desiredWorkingHours },
+      });
     }
 
     return NextResponse.json(
-      { success: true, data: { forms, desiredWorkingHours } },
+      { success: true, data: { forms, singleDesiredWorkingHours } },
       {
         status: 200,
       }

@@ -57,7 +57,7 @@ export function WorkChart({
           setDesiredWorkHrs(desiredHours);
 
           // Create the final chart data
-          const combinedChartData = data.data.forms.map(
+          const combinedChartData = data.data.forms?.map(
             (form: {
               hoursPlanned: number;
               hoursWorked: { name: string; hours: number }[];
@@ -110,7 +110,7 @@ export function WorkChart({
           <Loader />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {desiredWorkHrs.map((item: { name: string; hours: number }) => (
+            {desiredWorkHrs?.map((item: { name: string; hours: number }) => (
               <Card key={item.name} className="m-2">
                 <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
                   <div className="grid flex-1 gap-1 text-center sm:text-left">
