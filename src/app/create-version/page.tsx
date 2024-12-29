@@ -107,7 +107,6 @@ export default function ScheduleVersionCreator() {
     } catch (error) {
       console.error(error);
     }
-    console.log(formData);
     setIsSubmitting(false);
   };
 
