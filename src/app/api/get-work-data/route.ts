@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
-    const version = request.nextUrl.searchParams.get("version");
+    const versionFromClient = request.nextUrl.searchParams.get("version");
 
     if (!id) {
       return NextResponse.json(
@@ -21,10 +21,16 @@ export async function GET(request: NextRequest) {
 
     const forms = await Form.find({
       createdBy: id,
-      version,
+      version: versionFromClient,
     }).select("hoursPlanned hoursWorked createdAt");
 
-    const desiredWorkingHours = (await User.findById(id).select("slots")).slots;
+    const user = await User.findById(id);
+
+    const desiredWorkingHours = user?.versions?.map((version) => {
+      if (version.versionName === versionFromClient) {
+        return version.data?.slots;
+      }
+    });
 
     if (!forms.length) {
       return NextResponse.json(

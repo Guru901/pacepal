@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   isOnBoarded: { type: Boolean, default: false },
   versions: [
     {
-      versionName: { type: String, required: true },
+      versionName: { type: String, required: true, unique: true },
       data: {
         slots: { type: Array, default: [] },
         desiredSleepHours: { type: Number, required: true },

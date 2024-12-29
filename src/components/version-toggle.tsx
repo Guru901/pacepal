@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useGetUser from "@/hooks/use-get-user";
 import { useVersionStore } from "@/store/version-store";
+import { PencilIcon } from "lucide-react";
+import Link from "next/link";
 
 export function VersionToggle() {
   const { localUser } = useGetUser();
@@ -32,6 +34,11 @@ export function VersionToggle() {
             {version.versionName}
           </DropdownMenuItem>
         ))}
+        <Link href={"/create-version"}>
+          <DropdownMenuItem>
+            <PencilIcon /> Add new
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );
