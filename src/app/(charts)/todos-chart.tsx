@@ -115,7 +115,7 @@ export function TodosChart({
         setLoading(false);
       }
     })();
-  }, [userId, timeRange]);
+  }, [userId, timeRange, selectedVersion]);
 
   if (loading) return <Loader />;
 

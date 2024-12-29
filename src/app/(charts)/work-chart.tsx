@@ -101,7 +101,7 @@ export function WorkChart({
     };
 
     fetchWorkData();
-  }, [userId]);
+  }, [userId, selectedVersion]);
 
   return (
     <Card>

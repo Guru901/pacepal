@@ -35,7 +35,7 @@ export function Penalty({
         setLoading(false);
       }
     })();
-  }, []);
+  }, [userId, selectedVersion]);
 
   return (
     <Card className="w-[50vw]">

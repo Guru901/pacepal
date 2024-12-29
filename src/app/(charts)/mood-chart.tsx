@@ -100,7 +100,7 @@ export function MoodChart({
         setLoading(false);
       }
     })();
-  }, [userId]);
+  }, [userId, selectedVersion]);
 
   return (
     <Card className="flex flex-col w-[50vw]">

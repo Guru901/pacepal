@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import useGetUser from "@/hooks/use-get-user";
 import { useUserStore } from "@/store/user-store";
+import { useVersionStore } from "@/store/version-store";
 import axios from "axios";
 import { PencilIcon, SaveIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
@@ -34,6 +35,7 @@ export default function Me() {
 
   const { localUser } = useGetUser();
   const { setUser } = useUserStore();
+  const { selectedVersion } = useVersionStore();
 
   useEffect(() => {
     if (!localUser?.id) {
@@ -41,14 +43,24 @@ export default function Me() {
       return;
     }
 
+    const hrs = localUser.versions.map((version) => {
+      if (version.versionName === selectedVersion) {
+        return version.data.desiredSleepHours;
+      }
+    });
+
+    const slots = localUser.versions.map((version) => {
+      if (version.versionName === selectedVersion) {
+        return version.data.slots;
+      }
+    });
+
     if (localUser?.id) {
       setLoading(false);
-
-      setDesiredSleepHours(String(localUser?.desiredSleepHours || ""));
-
-      setEditableSlots(localUser?.slots ? [...localUser.slots] : []);
+      setDesiredSleepHours(String(hrs));
+      setEditableSlots(slots as []);
     }
-  }, [localUser]);
+  }, [localUser, selectedVersion]);
 
   const handleSaveSleepHours = async () => {
     try {
@@ -57,29 +69,31 @@ export default function Me() {
         alert("Please enter a valid number of sleep hours (0-24)");
         return;
       }
-
       const { data } = await axios.post("/api/update-user-sleeping-hrs", {
         id: localUser?.mongoId,
         desiredSleepHours: hours,
+        version: selectedVersion,
       });
 
       if (data.success) {
         setIsEditingSleep(false);
-        // @ts-expect-error - FIXME
         setUser({
-          ...localUser,
-          desiredSleepHours: hours,
+          versions: data.data.versions,
+          email: localUser?.email as string,
+          id: localUser?.mongoId as string,
+          picture: localUser?.picture as string,
+          given_name: localUser?.given_name as string,
+          isOnBoarded: true,
+          mongoId: localUser?.mongoId as string,
         });
-        return;
-      }
 
-      setIsEditingSleep(false);
+        setIsEditingSleep(false);
+      }
     } catch (error) {
       console.error("Failed to update sleep hours", error);
       alert("Failed to update sleep hours");
     }
   };
-
   // New function to handle slot updates
   const handleSaveSlots = async () => {
     try {
@@ -100,13 +114,18 @@ export default function Me() {
       const { data } = await axios.post("/api/update-user-slots", {
         id: localUser?.mongoId,
         slots: validSlots,
+        version: selectedVersion,
       });
 
       if (data.success) {
-        // @ts-expect-error - FIXME
         setUser({
-          ...localUser,
-          slots: validSlots,
+          versions: data.data.versions,
+          email: localUser?.email as string,
+          id: localUser?.mongoId as string,
+          picture: localUser?.picture as string,
+          given_name: localUser?.given_name as string,
+          isOnBoarded: true,
+          mongoId: localUser?.mongoId as string,
         });
 
         setIsEditingSlots(false);
@@ -193,7 +212,13 @@ export default function Me() {
                       step="0.5"
                     />
                   ) : (
-                    <p className="text-lg">{localUser?.desiredSleepHours}</p>
+                    <p className="text-lg">
+                      {
+                        localUser?.versions.find(
+                          (version) => version.versionName === selectedVersion
+                        )?.data.desiredSleepHours
+                      }
+                    </p>
                   )}
                 </div>
                 {isEditingSleep ? (
@@ -284,12 +309,14 @@ export default function Me() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {localUser?.slots?.map((slot, index) => (
-                    <div key={index} className="flex justify-between">
-                      <span>{slot.name}</span>
-                      <span>{slot.hours} hours</span>
-                    </div>
-                  ))}
+                  {localUser?.versions
+                    .find((version) => version.versionName === selectedVersion)
+                    ?.data.slots?.map((slot, index) => (
+                      <div key={index} className="flex justify-between">
+                        <span>{slot.name}</span>
+                        <span>{slot.hours} hours</span>
+                      </div>
+                    ))}
                 </div>
               )}
             </div>

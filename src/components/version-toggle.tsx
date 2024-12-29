@@ -16,13 +16,13 @@ import Link from "next/link";
 
 export function VersionToggle() {
   const { localUser } = useGetUser();
-  const { setSelectedVersion } = useVersionStore();
+  const { setSelectedVersion, selectedVersion } = useVersionStore();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          {localUser?.versions.map((version) => version.versionName)}
+          {selectedVersion}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

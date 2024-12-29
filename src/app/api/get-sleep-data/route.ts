@@ -26,11 +26,16 @@ export async function GET(request: NextRequest) {
 
     const user = await User.findById(id);
 
-    const desiredSleepHours = user?.versions?.map((version) => {
-      if (version.versionName === versionFromClient) {
-        return version.data?.desiredSleepHours;
+    const desiredSleepHours = user?.versions?.map(
+      (version: {
+        versionName: string | null;
+        data: { desiredSleepHours: number };
+      }) => {
+        if (version.versionName === versionFromClient) {
+          return version.data?.desiredSleepHours;
+        }
       }
-    });
+    );
 
     if (!forms.length) {
       return NextResponse.json(

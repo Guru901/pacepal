@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     const req = await request.json();
 
-    const { id, slots } = req;
+    const { id, slots, version } = req;
     if (!id || !slots) {
       return NextResponse.json(
         { message: "Missing required parameters", success: false },
@@ -19,7 +19,14 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await User.findByIdAndUpdate(id, {
-      slots,
+      versions: {
+        $elemMatch: {
+          versionName: version,
+          data: {
+            slots: slots,
+          },
+        },
+      },
     });
 
     if (!user) {
@@ -31,8 +38,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const versions = user.versions;
+
     return NextResponse.json(
-      { success: true, user },
+      { success: true, user, data: { versions } },
       {
         status: 200,
       }

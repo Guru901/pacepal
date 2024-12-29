@@ -105,7 +105,7 @@ export function SleepChart({
         setLoading(false);
       }
     })();
-  }, [userId, timeRange]);
+  }, [userId, timeRange, selectedVersion]);
 
   return (
     <Card>

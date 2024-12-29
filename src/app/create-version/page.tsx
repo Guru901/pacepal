@@ -18,6 +18,9 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import axios from "axios";
 import useGetUser from "@/hooks/use-get-user";
+import { useRouter } from "next/navigation";
+import { useVersionStore } from "@/store/version-store";
+import { useUserStore } from "@/store/user-store";
 
 const studySlotSchema = z.object({
   name: z.string().min(1, "Slot name is required"),
@@ -48,6 +51,11 @@ export default function ScheduleVersionCreator() {
 
   const { localUser } = useGetUser();
 
+  const router = useRouter();
+
+  const { setSelectedVersion } = useVersionStore();
+  const { setUser } = useUserStore();
+
   const {
     register,
     control,
@@ -74,19 +82,32 @@ export default function ScheduleVersionCreator() {
     0
   );
 
-  const onSubmit = async (data: ScheduleFormData) => {
+  const onSubmit = async (formData: ScheduleFormData) => {
     setIsSubmitting(true);
     try {
-      await axios.post(`/api/add-version`, {
+      const { data } = await axios.post(`/api/add-version`, {
         userId: localUser?.mongoId,
-        versionName: data.versionName,
-        desiredSleepHours: data.desiredSleepHours,
-        studySlots: data.studySlots,
+        versionName: formData.versionName,
+        desiredSleepHours: formData.desiredSleepHours,
+        studySlots: formData.studySlots,
       });
+      if (data.success) {
+        setSelectedVersion(formData.versionName);
+        setUser({
+          email: localUser?.email as string,
+          id: localUser?.mongoId as string,
+          picture: localUser?.picture,
+          given_name: localUser?.given_name as string,
+          isOnBoarded: true,
+          mongoId: localUser?.mongoId as string,
+          versions: data.data.versions,
+        });
+        router.push("/");
+      }
     } catch (error) {
       console.error(error);
     }
-    console.log(data);
+    console.log(formData);
     setIsSubmitting(false);
   };
 

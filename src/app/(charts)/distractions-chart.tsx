@@ -81,7 +81,7 @@ export function DistractionsChart({
         setLoading(false);
       }
     })();
-  }, [userId]);
+  }, [userId, selectedVersion]);
 
   // Generate dynamic colors based on the number of distractions
   const dynamicColors = generateColors(Object.keys(distractions).length);

@@ -26,11 +26,16 @@ export async function GET(request: NextRequest) {
 
     const user = await User.findById(id);
 
-    const desiredWorkingHours = user?.versions?.map((version) => {
-      if (version.versionName === versionFromClient) {
-        return version.data?.slots;
+    const desiredWorkingHours = user?.versions?.map(
+      (version: {
+        versionName: string | null;
+        data: { slots: { name: string; hours: number }[] };
+      }) => {
+        if (version.versionName === versionFromClient) {
+          return version.data?.slots;
+        }
       }
-    });
+    );
 
     if (!forms.length) {
       return NextResponse.json(

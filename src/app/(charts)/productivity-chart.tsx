@@ -62,7 +62,7 @@ export function ProductivityChart({
         setLoading(false);
       }
     })();
-  }, [userId]);
+  }, [userId, selectedVersion]);
 
   return (
     <Card className="w-full">

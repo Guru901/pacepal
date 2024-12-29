@@ -32,8 +32,14 @@ export async function POST(request: Request) {
 
     await user.save();
 
+    const versions = user.versions;
+
     return NextResponse.json(
-      { success: true, message: "Version added successfully" },
+      {
+        success: true,
+        message: "Version added successfully",
+        data: { versions },
+      },
       {
         status: 200,
       }

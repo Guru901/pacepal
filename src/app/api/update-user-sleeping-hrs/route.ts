@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     const req = await request.json();
 
-    const { id, desiredSleepHours } = req;
+    const { id, desiredSleepHours, version } = req;
 
     if (!id || !desiredSleepHours) {
       return NextResponse.json(
@@ -20,7 +20,14 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await User.findByIdAndUpdate(id, {
-      desiredSleepHours,
+      versions: {
+        $elemMatch: {
+          versionName: version,
+          data: {
+            desiredSleepHours: desiredSleepHours,
+          },
+        },
+      },
     });
 
     if (!user) {
@@ -32,8 +39,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const versions = user.versions;
+
     return NextResponse.json(
-      { success: true, user },
+      { success: true, user, data: { versions } },
       {
         status: 200,
       }
