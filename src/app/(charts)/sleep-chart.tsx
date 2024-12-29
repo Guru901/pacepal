@@ -94,7 +94,7 @@ export function SleepChart({
           const transformedData = filteredData.map((item) => ({
             date: new Date(item.createdAt).toLocaleDateString("en-US"),
             actual_sleeping_hrs: item.hoursSlept,
-            desired_sleep_hrs: data.data.desiredSleepHours,
+            desired_sleep_hrs: data.data.desiredSleepHours[0],
           }));
 
           setChartData(transformedData);

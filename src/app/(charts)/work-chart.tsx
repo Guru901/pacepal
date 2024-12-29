@@ -53,7 +53,7 @@ export function WorkChart({
 
         if (data.success) {
           // Get desired working hours dynamically
-          const desiredHours = data.data.desiredWorkingHours;
+          const desiredHours = data.data.desiredWorkingHours[0];
           setDesiredWorkHrs(desiredHours);
 
           // Create the final chart data
@@ -66,20 +66,15 @@ export function WorkChart({
               const date = new Date(form.createdAt).toLocaleDateString("en-US");
               const dataForDate = { date };
 
-              // Normalize period names (handle variations)
-
               // For each time period, set the actual and desired hours
               form.hoursWorked.forEach((entry) => {
-                // Normalize the period name
                 const periodName = entry.name;
 
                 const desiredPeriod = desiredHours.find(
-                  // @ts-expect-error FIXME
                   (d) => d.name.toLowerCase() === periodName.toLowerCase()
                 );
 
                 if (desiredPeriod) {
-                  // @ts-expect-error FIXME
                   dataForDate[periodName] = {
                     actual_working_hrs: entry.hours,
                     desired_working_hrs: desiredPeriod.hours,
@@ -101,7 +96,7 @@ export function WorkChart({
     };
 
     fetchWorkData();
-  }, [userId, selectedVersion]);
+  }, [userId, selectedVersion, setisLoading]);
 
   return (
     <Card>
@@ -113,7 +108,7 @@ export function WorkChart({
           <Loader />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {desiredWorkHrs.map((item: { name: string; hours: number }) => (
+            {desiredWorkHrs.map((item: { name: string; hours: number }[]) => (
               <Card key={item.name} className="m-2">
                 <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
                   <div className="grid flex-1 gap-1 text-center sm:text-left">

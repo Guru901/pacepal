@@ -8,22 +8,30 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
-    const version = request.nextUrl.searchParams.get("version");
+    const versionFromClient = request.nextUrl.searchParams.get("version");
     let penalty = 0;
 
-    const desiredSleepHours = await User.findById(id).select(
-      "desiredSleepHours"
+    const user = await User.findById(id);
+
+    const desiredSleepHours = user?.versions?.map(
+      (version: {
+        versionName: string | null;
+        data: { desiredSleepHours: number };
+      }) => {
+        if (version.versionName === versionFromClient) {
+          return version.data.desiredSleepHours;
+        }
+      }
     );
 
     const forms = await Form.find({
       createdBy: id,
-      version,
+      version: versionFromClient,
     }).select("hoursSlept");
 
     forms.forEach((form) => {
-      if (form.hoursSlept > desiredSleepHours.desiredSleepHours) {
-        const penaltyHrs =
-          form.hoursSlept - desiredSleepHours.desiredSleepHours;
+      if (form.hoursSlept > desiredSleepHours[0]) {
+        const penaltyHrs = form.hoursSlept - desiredSleepHours[0];
         penalty += penaltyHrs * 100;
       }
     });
