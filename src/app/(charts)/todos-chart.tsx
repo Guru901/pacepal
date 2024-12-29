@@ -42,7 +42,13 @@ type ChartData = {
   tasksPlanned: number;
 };
 
-export function TodosChart({ userId }: { userId: string }) {
+export function TodosChart({
+  userId,
+  selectedVersion,
+}: {
+  userId: string;
+  selectedVersion: string;
+}) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [timeRange, setTimeRange] = useState("30d");
   const [loading, setLoading] = useState(true);
@@ -73,7 +79,9 @@ export function TodosChart({ userId }: { userId: string }) {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/get-todos-data?id=${userId}`);
+        const { data } = await axios.get(
+          `/api/get-todos-data?id=${userId}&version=${selectedVersion}`
+        );
         if (data.success) {
           // Map backend keys to expected keys
           const formattedData = data.data.todos.map((item: TodoData) => ({

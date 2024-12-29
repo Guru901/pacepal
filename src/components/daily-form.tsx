@@ -23,31 +23,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
-import { useUserStore } from "@/store/user-store";
 import { useState } from "react";
-
-const formSchema = z.object({
-  followedSchedule: z.enum(["yes", "no"]),
-  productivity: z.string().min(1, "Please select a productivity rating"),
-  tasksCompleted: z
-    .number()
-    .int()
-    .min(0, "Tasks completed must be 0 or greater"),
-  tasksPlanned: z.number().int().min(0, "Tasks planned must be 0 or greater"),
-  sleptWell: z.enum(["yes", "no"]),
-  distractions: z.enum(["yes", "no"]),
-  distractionsList: z.string().optional(),
-  mood: z.enum(["happy", "tired", "neutral", "stressed", "productive"]),
-  hoursSlept: z.number().min(0, "Hours slept must be 0 or greater"),
-  hoursWorked: z.array(z.object({ name: z.string(), hours: z.number() })),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { useVersionStore } from "@/store/version-store";
+import useGetUser from "@/hooks/use-get-user";
 
 export function DailyForm({ hrs }: { hrs: number }) {
-  const { user } = useUserStore();
+  const { localUser: user } = useGetUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { selectedVersion } = useVersionStore();
+  const formSchema = z.object({
+    followedSchedule: z.enum(["yes", "no"]),
+    productivity: z.string().min(1, "Please select a productivity rating"),
+    tasksCompleted: z
+      .number()
+      .int()
+      .min(0, "Tasks completed must be 0 or greater"),
+    tasksPlanned: z.number().int().min(0, "Tasks planned must be 0 or greater"),
+    sleptWell: z.enum(["yes", "no"]),
+    distractions: z.enum(["yes", "no"]),
+    distractionsList: z.string().optional(),
+    mood: z.enum(["happy", "tired", "neutral", "stressed", "productive"]),
+    hoursSlept: z.number().min(0, "Hours slept must be 0 or greater"),
+    hoursWorked: z.array(z.object({ name: z.string(), hours: z.number() })),
+    version: z.string(),
+  });
+
+  type FormData = z.infer<typeof formSchema>;
   const {
     control,
     handleSubmit,
@@ -65,6 +67,7 @@ export function DailyForm({ hrs }: { hrs: number }) {
       distractionsList: "",
       mood: "neutral",
       hoursWorked: [],
+      version: selectedVersion,
     },
   });
 
@@ -121,6 +124,36 @@ export function DailyForm({ hrs }: { hrs: number }) {
               )}
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="version">Version</Label>
+            <Controller
+              name="version"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={selectedVersion}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a version" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {user?.versions.map((version) => (
+                      <SelectItem
+                        key={version.versionName}
+                        value={version.versionName}
+                      >
+                        {version.versionName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.version && (
+              <p className="text-red-500 text-sm">{errors.version.message}</p>
+            )}
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="productivity">Rate your productivity (1-10)</Label>
@@ -152,47 +185,52 @@ export function DailyForm({ hrs }: { hrs: number }) {
             )}
           </div>
 
-          <div>
-            <div className="space-y-2">
-              <Label htmlFor="hoursWorked">Hours worked</Label>
-              <div className="flex gap-2 flex-wrap">
-                {user?.slots.map((slot) => (
-                  <Controller
-                    key={`hoursWorked-${slot.name}`}
-                    name="hoursWorked"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <div className="flex flex-col space-y-1 w-full max-w-[150px]">
-                        <Label className="text-xs">{slot.name}</Label>
-                        <Input
-                          type="number"
-                          step="0.5"
-                          placeholder={`${slot.name} hours`}
-                          onChange={(e) => {
-                            const hours = parseFloat(e.target.value);
-                            const newValue = isNaN(hours)
-                              ? value.filter((item) => item.name !== slot.name)
-                              : [
-                                  ...value.filter(
+          <div className="space-y-2">
+            <Label htmlFor="hoursWorked">Hours worked</Label>
+            <div className="flex gap-2 flex-wrap">
+              {user?.versions.map((version) => {
+                if (version.versionName === selectedVersion) {
+                  const slots = version.data.slots;
+                  return slots.map((slot) => (
+                    <Controller
+                      key={`hoursWorked-${slot.name}`}
+                      name="hoursWorked"
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <div className="flex flex-col space-y-1 w-full max-w-[150px]">
+                          <Label className="text-xs">{slot.name}</Label>
+                          <Input
+                            type="number"
+                            step="0.5"
+                            placeholder={`${slot.name} hours`}
+                            onChange={(e) => {
+                              const hours = parseFloat(e.target.value);
+                              const newValue = isNaN(hours)
+                                ? value.filter(
                                     (item) => item.name !== slot.name
-                                  ),
-                                  { name: slot.name, hours: hours },
-                                ];
-                            onChange(newValue);
-                          }}
-                          value={
-                            value?.find((item) => item.name === slot.name)
-                              ?.hours || ""
-                          }
-                        />
-                      </div>
-                    )}
-                  />
-                ))}
-              </div>
+                                  )
+                                : [
+                                    ...value.filter(
+                                      (item) => item.name !== slot.name
+                                    ),
+                                    { name: slot.name, hours: hours },
+                                  ];
+                              onChange(newValue);
+                            }}
+                            value={
+                              value?.find((item) => item.name === slot.name)
+                                ?.hours || ""
+                            }
+                          />
+                        </div>
+                      )}
+                    />
+                  ));
+                }
+                return null;
+              })}
             </div>
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="tasksCompleted">Tasks completed</Label>

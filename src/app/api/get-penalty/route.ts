@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
+    const version = request.nextUrl.searchParams.get("version");
     let penalty = 0;
 
     const desiredSleepHours = await User.findById(id).select(
@@ -16,6 +17,7 @@ export async function GET(request: NextRequest) {
 
     const forms = await Form.find({
       createdBy: id,
+      version,
     }).select("hoursSlept");
 
     forms.forEach((form) => {

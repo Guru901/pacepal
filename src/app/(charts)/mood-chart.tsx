@@ -42,7 +42,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function MoodChart({ userId }: { userId: string }) {
+export function MoodChart({
+  userId,
+  selectedVersion,
+}: {
+  userId: string;
+  selectedVersion: string;
+}) {
   const [chartData, setChartData] = useState([
     { mood: "happy", freq: 0, fill: "#2662D9" }, // Example color for "happy"
     { mood: "tired", freq: 0, fill: "#2EB88A" }, // Example color for "tired"
@@ -57,7 +63,9 @@ export function MoodChart({ userId }: { userId: string }) {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/get-mood-data?id=${userId}`);
+        const { data } = await axios.get(
+          `/api/get-mood-data?id=${userId}&version=${selectedVersion}`
+        );
 
         if (data.success) {
           const moodCounts = {

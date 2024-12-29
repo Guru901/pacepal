@@ -39,7 +39,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function SleepChart({ userId }: { userId: string }) {
+export function SleepChart({
+  userId,
+  selectedVersion,
+}: {
+  userId: string;
+  selectedVersion: string;
+}) {
   const [chartData, setChartData] = useState([
     {
       date: "",
@@ -74,7 +80,9 @@ export function SleepChart({ userId }: { userId: string }) {
       try {
         // Fetch the sleep data from the API
         setLoading(true);
-        const { data } = await axios.get(`/api/get-sleep-data?id=${userId}`);
+        const { data } = await axios.get(
+          `/api/get-sleep-data?id=${userId}&version=${selectedVersion}`
+        );
         if (data.success) {
           // Filter and transform the data based on the selected time range
           const filteredData = filterDataByTimeRange(

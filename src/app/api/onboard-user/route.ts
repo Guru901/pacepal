@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
       isOnBoarded,
       slots,
       desiredSleepHours,
+      version: versionFromClient,
     } = req;
 
     const user = await User.findOne({ kindeId: id });
@@ -35,8 +36,15 @@ export async function POST(request: NextRequest) {
       picture,
       given_name,
       isOnBoarded,
-      slots,
-      desiredSleepHours,
+      versions: [
+        {
+          versionName: versionFromClient,
+          data: {
+            slots,
+            desiredSleepHours,
+          },
+        },
+      ],
     });
 
     return NextResponse.json(

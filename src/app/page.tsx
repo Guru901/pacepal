@@ -12,64 +12,95 @@ import { WorkChart } from "./(charts)/work-chart";
 import { MoodChart } from "./(charts)/mood-chart";
 import { Penalty } from "./(charts)/penalty";
 import { DistractionsChart } from "./(charts)/distractions-chart";
-import {ProductivityChart} from "@/app/(charts)/productivity-chart";
+import { ProductivityChart } from "@/app/(charts)/productivity-chart";
+import { useVersionStore } from "@/store/version-store";
 
 export default function Dashboard() {
   const { localUser: user } = useGetUser();
+  const { selectedVersion } = useVersionStore();
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  async function isFormSubmittedFetch() {
-    try {
-      const userID = user?.mongoId.replaceAll(" ", "_");
-      setLoading(true);
-
-      if (!userID) return;
-
-      const { data } = await axios.get(`/api/is-form-submitted?id=${userID}`);
-      if (data.success) {
-        if (data.isFormSubmitted) {
-          setIsFormSubmitted(true);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
   useEffect(() => {
+    async function isFormSubmittedFetch() {
+      try {
+        const userID = user?.mongoId.replaceAll(" ", "_");
+        setLoading(true);
+
+        if (!userID) return;
+
+        const { data } = await axios.get(`/api/is-form-submitted?id=${userID}`);
+        if (data.success) {
+          if (data.isFormSubmitted) {
+            setIsFormSubmitted(true);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     (async () => {
       await isFormSubmittedFetch();
     })();
-  }, [user?.mongoId]);
+  }, [user?.mongoId, isFormSubmitted]);
 
   if (loading || !user?.id) return <Loader />;
-
   return (
     <main>
       <Navbar />
       {!isFormSubmitted ? (
         <div>
-          <DailyForm hrs={Number(user?.desiredSleepHours)} />
+          <DailyForm
+            hrs={Number(
+              user.versions.map((version) => {
+                if (version.versionName === selectedVersion) {
+                  console.log(version);
+                  return version.data.desiredSleepHours;
+                }
+              })
+            )}
+          />
         </div>
       ) : (
-          <div className="flex flex-col gap-2 mx-4">
-            <SleepChart userId={String(user?.mongoId)}/>
-            <TodosChart userId={String(user?.mongoId)}/>
-            <WorkChart userId={String(user?.mongoId)}/>
-            <div className="flex gap-2">
-              <MoodChart userId={String(user?.mongoId)}/>
-              <Penalty userId={String(user?.mongoId)}/>
-            </div>
-
-            <div className="flex gap-2">
-              <DistractionsChart userId={String(user?.mongoId)}/>
-              <ProductivityChart userId={String(user?.mongoId)}/>
-            </div>
-            </div>
-            )}
-          </main>
-      );
-      }
+        <div className="flex flex-col gap-2 mx-4">
+          <SleepChart
+            userId={String(user?.mongoId)}
+            selectedVersion={selectedVersion}
+          />
+          <TodosChart
+            userId={String(user?.mongoId)}
+            selectedVersion={selectedVersion}
+          />
+          <WorkChart
+            userId={String(user?.mongoId)}
+            selectedVersion={selectedVersion}
+          />
+          <div className="flex gap-2">
+            <MoodChart
+              userId={String(user?.mongoId)}
+              selectedVersion={selectedVersion}
+            />
+            <Penalty
+              userId={String(user?.mongoId)}
+              selectedVersion={selectedVersion}
+            />
+          </div>
+          <div className="flex gap-2">
+            <DistractionsChart
+              userId={String(user?.mongoId)}
+              selectedVersion={selectedVersion}
+            />
+            <ProductivityChart
+              userId={String(user?.mongoId)}
+              selectedVersion={selectedVersion}
+            />
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}

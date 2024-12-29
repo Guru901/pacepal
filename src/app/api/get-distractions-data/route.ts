@@ -7,9 +7,10 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
+    const version = request.nextUrl.searchParams.get("version");
+
     const distractionsArray: string[] = [];
     const distractions: string[] = [];
-
 
     if (!id) {
       return NextResponse.json(
@@ -22,6 +23,7 @@ export async function GET(request: NextRequest) {
 
     const forms = await Form.find({
       createdBy: id,
+      version,
     }).select("distractionsList createdAt");
 
     forms.forEach((form: { distractionsList: string }) => {
@@ -32,9 +34,9 @@ export async function GET(request: NextRequest) {
 
     distractionsArray.forEach((distraction) => {
       if (distraction !== "") {
-        distractions.push(distraction)
+        distractions.push(distraction);
       }
-    })
+    });
 
     if (!forms.length) {
       return NextResponse.json(

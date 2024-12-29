@@ -25,7 +25,13 @@ function generateColors(count: number) {
   }
   return colors;
 }
-export function DistractionsChart({ userId }: { userId: string }) {
+export function DistractionsChart({
+  userId,
+  selectedVersion,
+}: {
+  userId: string;
+  selectedVersion: string;
+}) {
   const [loading, setLoading] = useState(true);
   const [distractions, setDistractions] = useState<{ [key: string]: number }>(
     {}
@@ -56,7 +62,7 @@ export function DistractionsChart({ userId }: { userId: string }) {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `/api/get-distractions-data?id=${userId}`
+          `/api/get-distractions-data?id=${userId}&version=${selectedVersion}`
         );
         if (data.success) {
           // Count the occurrences of each distraction

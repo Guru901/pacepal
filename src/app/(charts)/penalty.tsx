@@ -9,7 +9,13 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export function Penalty({ userId }: { userId: string }) {
+export function Penalty({
+  userId,
+  selectedVersion,
+}: {
+  userId: string;
+  selectedVersion: string;
+}) {
   const [penalty, setPenalty] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +23,9 @@ export function Penalty({ userId }: { userId: string }) {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/get-penalty?id=${userId}`);
+        const { data } = await axios.get(
+          `/api/get-penalty?id=${userId}&version=${selectedVersion}`
+        );
 
         setPenalty(data.data.penalty);
       } catch (error) {

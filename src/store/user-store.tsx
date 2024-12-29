@@ -8,11 +8,16 @@ type UserStoreActions = {
     given_name: string;
     email: string;
     isOnBoarded: boolean;
-    slots: {
-      name: string;
-      hours: number;
+    versions: {
+      versionName: string; // Added to match user model
+      data: {
+        slots: {
+          name: string;
+          hours: number;
+        }[];
+        desiredSleepHours: number;
+      };
     }[];
-    desiredSleepHours: number;
     mongoId: string;
   } | null;
   setUser: (user: UserStoreActions["user"]) => void;
@@ -21,16 +26,7 @@ type UserStoreActions = {
 export const useUserStore = create<UserStoreActions>()(
   persist(
     (set) => ({
-      user: {
-        email: "",
-        id: "",
-        picture: "",
-        given_name: "",
-        isOnBoarded: false,
-        slots: [],
-        desiredSleepHours: 7,
-        mongoId: "",
-      },
+      user: null, // Initialize user as null to match user model
       setUser: (user) => set({ user }),
     }),
     {

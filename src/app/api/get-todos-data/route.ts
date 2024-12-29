@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
+    const version = request.nextUrl.searchParams.get("version");
 
     if (!id) {
       return NextResponse.json(
@@ -19,6 +20,7 @@ export async function GET(request: NextRequest) {
 
     const todos = await Form.find({
       createdBy: id,
+      version,
     }).select("tasksCompleted tasksPlanned createdAt");
 
     if (!todos.length) {

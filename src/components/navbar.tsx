@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { useUserStore } from "@/store/user-store";
 import { ModeToggle } from "./theme-toggle";
 import Link from "next/link";
+import { VersionToggle } from "./version-toggle";
 
 export default function Navbar() {
   const { isAuthenticated } = useKindeAuth();
@@ -17,9 +18,12 @@ export default function Navbar() {
 
   return (
     <header className="flex justify-between items-center py-4 px-8">
-      <Link className="text-xl" href="/">PacePal</Link>
+      <Link className="text-xl" href="/">
+        PacePal
+      </Link>
       <div className="flex gap-4">
         <ModeToggle />
+        <VersionToggle />
         {isAuthenticated ? (
           <>
             <Link href="/me">
@@ -34,9 +38,16 @@ export default function Navbar() {
                     picture: "",
                     given_name: "",
                     isOnBoarded: false,
-                    desiredSleepHours: 7,
                     mongoId: "",
-                    slots: [],
+                    versions: [
+                      {
+                        data: {
+                          desiredSleepHours: 0,
+                          slots: [],
+                        },
+                        versionName: "v1",
+                      },
+                    ],
                   });
                 }}
                 variant={"secondary"}

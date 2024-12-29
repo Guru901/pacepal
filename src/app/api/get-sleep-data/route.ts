@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
     await connectToDB();
 
     const id = request.nextUrl.searchParams.get("id");
+    const versionFromClient = request.nextUrl.searchParams.get("version");
 
     if (!id) {
       return NextResponse.json(
@@ -20,11 +21,16 @@ export async function GET(request: NextRequest) {
 
     const forms = await Form.find({
       createdBy: id,
+      version: versionFromClient,
     }).select("hoursSlept createdAt");
 
-    const desiredSleepHours = (
-      await User.findById(id).select("desiredSleepHours")
-    ).desiredSleepHours;
+    const user = await User.findById(id);
+
+    const desiredSleepHours = user?.versions?.map((version) => {
+      if (version.versionName === versionFromClient) {
+        return version.data?.desiredSleepHours;
+      }
+    });
 
     if (!forms.length) {
       return NextResponse.json(

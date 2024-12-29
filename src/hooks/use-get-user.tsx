@@ -36,9 +36,8 @@ export default function useGetUser() {
             picture: data.user.picture,
             given_name: data.user.given_name,
             isOnBoarded: data.user.isOnBoarded,
-            slots: data.user.slots,
-            desiredSleepHours: data.user.desiredSleepHours,
             mongoId: data.user._id,
+            versions: data.user.versions,
           });
         } catch (error) {
           setError("error in getLoggedInUser");
