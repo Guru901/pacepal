@@ -32,6 +32,7 @@ export function DailyForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { selectedVersion } = useVersionStore();
+
   const formSchema = z.object({
     followedSchedule: z.enum(["yes", "no"]),
     productivity: z.string().min(1, "Please select a productivity rating"),
@@ -46,7 +47,6 @@ export function DailyForm() {
     mood: z.enum(["happy", "tired", "neutral", "stressed", "productive"]),
     hoursSlept: z.number().min(0, "Hours slept must be 0 or greater"),
     hoursWorked: z.array(z.object({ name: z.string(), hours: z.number() })),
-    version: z.string(),
   });
 
   type FormData = z.infer<typeof formSchema>;
@@ -67,7 +67,6 @@ export function DailyForm() {
       distractionsList: "",
       mood: "neutral",
       hoursWorked: [],
-      version: selectedVersion,
     },
   });
 
@@ -78,6 +77,7 @@ export function DailyForm() {
     try {
       const { data } = await axios.post("/api/submit-form", {
         createdBy: user?.mongoId,
+        version: selectedVersion,
         ...formData,
       });
 
@@ -127,9 +127,6 @@ export function DailyForm() {
           <div className="space-y-2">
             <Label htmlFor="version">Version</Label>
             <p>{selectedVersion}</p>
-            {errors.version && (
-              <p className="text-red-500 text-sm">{errors.version.message}</p>
-            )}
           </div>
 
           <div className="space-y-2">
