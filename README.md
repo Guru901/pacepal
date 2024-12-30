@@ -19,7 +19,7 @@ To get started, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/kinde-oss/pacepal.git
+git clone https://github.com/guru901/pacepal.git
 ```
 
 2. Install the dependencies:
@@ -28,10 +28,16 @@ git clone https://github.com/kinde-oss/pacepal.git
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your Kinde API key:
+3. Create a `.env` file in the root directory and add the following environment variables:
 
 ```bash
-KINDE_API_KEY=your_kinde_api_key
+KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/onboarding
+KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
+KINDE_SITE_URL=http://localhost:3000
+DATABASE_URL=
+KINDE_CLIENT_ID=
+KINDE_CLIENT_SECRET=
+KINDE_ISSUER_URL=
 ```
 
 4. Run the development server:
