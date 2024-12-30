@@ -27,7 +27,7 @@ import { useState } from "react";
 import { useVersionStore } from "@/store/version-store";
 import useGetUser from "@/hooks/use-get-user";
 
-export function DailyForm({ hrs }: { hrs: number }) {
+export function DailyForm() {
   const { localUser: user } = useGetUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -126,30 +126,7 @@ export function DailyForm({ hrs }: { hrs: number }) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="version">Version</Label>
-            <Controller
-              name="version"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={selectedVersion}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a version" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {user?.versions.map((version) => (
-                      <SelectItem
-                        key={version.versionName}
-                        value={version.versionName}
-                      >
-                        {version.versionName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
+            <p>{selectedVersion}</p>
             {errors.version && (
               <p className="text-red-500 text-sm">{errors.version.message}</p>
             )}
@@ -274,7 +251,15 @@ export function DailyForm({ hrs }: { hrs: number }) {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Did you sleep more than {hrs} hours?</Label>
+            <Label>
+              Did you sleep more than{" "}
+              {user?.versions.map((version) => {
+                if (version.versionName === selectedVersion) {
+                  return version.data.desiredSleepHours;
+                }
+              })}
+              hours?
+            </Label>
             <Controller
               name="sleptWell"
               control={control}

@@ -54,15 +54,7 @@ export default function Dashboard() {
       <Navbar />
       {!isFormSubmitted ? (
         <div>
-          <DailyForm
-            hrs={Number(
-              user.versions.map((version) => {
-                if (version.versionName === selectedVersion) {
-                  return version.data.desiredSleepHours;
-                }
-              })
-            )}
-          />
+          <DailyForm />
         </div>
       ) : (
         <div className="flex flex-col gap-2 mx-4">
