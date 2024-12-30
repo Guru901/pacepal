@@ -54,7 +54,10 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, data: { forms, singleDesiredWorkingHours } },
+      {
+        success: true,
+        data: { forms, desiredWorkingHours: singleDesiredWorkingHours },
+      },
       {
         status: 200,
       }

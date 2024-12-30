@@ -26,16 +26,24 @@ export async function GET(request: NextRequest) {
 
     const user = await User.findById(id);
 
-    const desiredSleepHours = user?.versions?.map(
-      (version: {
-        versionName: string | null;
-        data: { desiredSleepHours: number };
-      }) => {
-        if (version.versionName === versionFromClient) {
-          return version.data?.desiredSleepHours;
+    const desiredSleepHours = user?.versions
+      ?.map(
+        (version: {
+          versionName: string | null;
+          data: { desiredSleepHours: number };
+        }) => {
+          if (version.versionName === versionFromClient) {
+            return version.data?.desiredSleepHours;
+          }
+          return null;
         }
-      }
-    );
+      )
+      .filter((hours: number | null) => {
+        return hours !== null;
+      });
+
+    const singleDesiredSleepingHours =
+      desiredSleepHours.length > 0 ? [desiredSleepHours[0]] : [];
 
     if (!forms.length) {
       return NextResponse.json({
@@ -46,7 +54,10 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, data: { forms, desiredSleepHours } },
+      {
+        success: true,
+        data: { forms, desiredSleepHours: singleDesiredSleepingHours },
+      },
       {
         status: 200,
       }
