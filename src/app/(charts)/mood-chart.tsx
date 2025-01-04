@@ -50,11 +50,11 @@ export function MoodChart({
   selectedVersion: string;
 }) {
   const [chartData, setChartData] = useState([
-    { mood: "happy", freq: 0, fill: "#2662D9" }, // Example color for "happy"
-    { mood: "tired", freq: 0, fill: "#2EB88A" }, // Example color for "tired"
-    { mood: "neutral", freq: 0, fill: "#E88C30" }, // Example color for "neutral"
-    { mood: "stressed", freq: 0, fill: "#E23670" }, // Example color for "stressed"
-    { mood: "productive", freq: 0, fill: "#9062cd" }, // Example color for "productive"
+    { mood: "happy", freq: 0, fill: "#2662D9" }, 
+    { mood: "tired", freq: 0, fill: "#2EB88A" },
+    { mood: "neutral", freq: 0, fill: "#E88C30" }, 
+    { mood: "stressed", freq: 0, fill: "#E23670" }, 
+    { mood: "productive", freq: 0, fill: "#9062cd" }, 
   ]);
 
   const [loading, setLoading] = useState(true);

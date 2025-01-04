@@ -11,6 +11,7 @@ import { TodosChart } from "./(charts)/todos-chart";
 import { WorkChart } from "./(charts)/work-chart";
 import { MoodChart } from "./(charts)/mood-chart";
 import { Penalty } from "./(charts)/penalty";
+import { OverworkChart } from "./(charts)/overwork-chart"
 import { DistractionsChart } from "./(charts)/distractions-chart";
 import { ProductivityChart } from "@/app/(charts)/productivity-chart";
 import { useVersionStore } from "@/store/version-store";
@@ -75,10 +76,17 @@ export default function Dashboard() {
               userId={String(user?.mongoId)}
               selectedVersion={selectedVersion}
             />
-            <Penalty
-              userId={String(user?.mongoId)}
-              selectedVersion={selectedVersion}
-            />
+            <div className="flex gap-2">
+              <Penalty
+                userId={String(user?.mongoId)}
+                selectedVersion={selectedVersion}
+              />
+              <OverworkChart
+                userId={String(user?.mongoId)}
+                selectedVersion={selectedVersion}
+              />
+            </div>
+
           </div>
           <div className="flex gap-2">
             <DistractionsChart

@@ -50,6 +50,10 @@ const formSchema = new Schema(
       enum: ["happy", "tired", "neutral", "stressed", "productive"],
       default: "neutral",
     },
+    overWork: {
+      type: Number,
+      default: 0,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

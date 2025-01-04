@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       hoursSlept,
       mood,
       version,
+      overWork
     } = req;
 
     const form = await Form.create({
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
       followedSchedule,
       hoursSlept,
       version,
+      overWork
     });
 
     return NextResponse.json(

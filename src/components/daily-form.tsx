@@ -47,6 +47,7 @@ export function DailyForm() {
     mood: z.enum(["happy", "tired", "neutral", "stressed", "productive"]),
     hoursSlept: z.number().min(0, "Hours slept must be 0 or greater"),
     hoursWorked: z.array(z.object({ name: z.string(), hours: z.number() })),
+    overWork: z.number().min(0),
   });
 
   type FormData = z.infer<typeof formSchema>;
@@ -67,6 +68,7 @@ export function DailyForm() {
       distractionsList: "",
       mood: "neutral",
       hoursWorked: [],
+      overWork: 0
     },
   });
 
@@ -181,14 +183,14 @@ export function DailyForm() {
                               const hours = parseFloat(e.target.value);
                               const newValue = isNaN(hours)
                                 ? value.filter(
-                                    (item) => item.name !== slot.name
-                                  )
+                                  (item) => item.name !== slot.name
+                                )
                                 : [
-                                    ...value.filter(
-                                      (item) => item.name !== slot.name
-                                    ),
-                                    { name: slot.name, hours: hours },
-                                  ];
+                                  ...value.filter(
+                                    (item) => item.name !== slot.name
+                                  ),
+                                  { name: slot.name, hours: hours },
+                                ];
                               onChange(newValue);
                             }}
                             value={
@@ -327,6 +329,22 @@ export function DailyForm() {
               control={control}
               render={({ field }) => (
                 <Textarea id="distractionsList" {...field} />
+              )}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Overwork hours(if any)</Label>
+            <Controller
+              name="overWork"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="number"
+                  id="overWork"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
               )}
             />
           </div>
