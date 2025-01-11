@@ -26,12 +26,9 @@ export default function Me() {
 
   // New state for slots editing
   const [isEditingSlots, setIsEditingSlots] = useState(false);
-  const [editableSlots, setEditableSlots] = useState([
-    {
-      name: "",
-      hours: 0,
-    },
-  ]);
+  const [editableSlots, setEditableSlots] = useState<
+    Array<{ name: string; hours: number }>
+  >([]);
 
   const { localUser } = useGetUser();
   const { setUser } = useUserStore();
@@ -49,18 +46,21 @@ export default function Me() {
       }
     });
 
-    const slots = localUser.versions.map((version) => {
-      if (version.versionName === selectedVersion) {
-        return version.data.slots;
-      }
-    });
+    const slots =
+      localUser.versions
+        .filter((version) => version.versionName === selectedVersion)
+        .map((version) => version.data.slots)[0] || [];
 
     if (localUser?.id) {
       setLoading(false);
       setDesiredSleepHours(String(hrs));
-      setEditableSlots(slots as []);
+      setEditableSlots(slots);
     }
   }, [localUser, selectedVersion]);
+
+  useEffect(() => {
+    console.log(editableSlots);
+  }, [isEditingSlots, editableSlots]);
 
   const handleSaveSleepHours = async () => {
     try {
@@ -309,14 +309,12 @@ export default function Me() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {localUser?.versions
-                    .find((version) => version.versionName === selectedVersion)
-                    ?.data.slots?.map((slot, index) => (
-                      <div key={index} className="flex justify-between">
-                        <span>{slot.name}</span>
-                        <span>{slot.hours} hours</span>
-                      </div>
-                    ))}
+                  {editableSlots?.map((slot, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{slot.name}</span>
+                      <span>{slot.hours} hours</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
