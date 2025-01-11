@@ -19,16 +19,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await User.findByIdAndUpdate(id, {
-      versions: {
-        $elemMatch: {
-          versionName: version,
-          data: {
-            desiredSleepHours: desiredSleepHours,
-          },
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          "versions.$[elem].data.desiredSleepHours": desiredSleepHours,
         },
       },
-    });
+      {
+        arrayFilters: [{ "elem.versionName": version }],
+        new: true,
+      }
+    );
 
     if (!user) {
       return NextResponse.json(

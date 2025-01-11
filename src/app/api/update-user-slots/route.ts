@@ -18,16 +18,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await User.findByIdAndUpdate(id, {
-      versions: {
-        $elemMatch: {
-          versionName: version,
-          data: {
-            slots: slots,
-          },
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          "versions.$[elem].data.slots": slots,
         },
       },
-    });
+      {
+        arrayFilters: [{ "elem.versionName": version }],
+        new: true,
+      }
+    );
 
     if (!user) {
       return NextResponse.json(
