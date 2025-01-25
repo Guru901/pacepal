@@ -68,7 +68,7 @@ export function DailyForm() {
       distractionsList: "",
       mood: "neutral",
       hoursWorked: [],
-      overWork: 0
+      overWork: 0,
     },
   });
 
@@ -174,7 +174,9 @@ export function DailyForm() {
                       control={control}
                       render={({ field: { value, onChange } }) => (
                         <div className="flex flex-col space-y-1 w-full max-w-[150px]">
-                          <Label className="text-xs">{slot.name}</Label>
+                          <Label className="text-xs">
+                            {slot.name} - {slot.hours} hours
+                          </Label>
                           <Input
                             type="number"
                             step="0.5"
@@ -183,14 +185,14 @@ export function DailyForm() {
                               const hours = parseFloat(e.target.value);
                               const newValue = isNaN(hours)
                                 ? value.filter(
-                                  (item) => item.name !== slot.name
-                                )
-                                : [
-                                  ...value.filter(
                                     (item) => item.name !== slot.name
-                                  ),
-                                  { name: slot.name, hours: hours },
-                                ];
+                                  )
+                                : [
+                                    ...value.filter(
+                                      (item) => item.name !== slot.name
+                                    ),
+                                    { name: slot.name, hours: hours },
+                                  ];
                               onChange(newValue);
                             }}
                             value={
