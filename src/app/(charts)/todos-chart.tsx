@@ -22,11 +22,11 @@ import { Loader } from "@/components/Loading";
 const chartConfig: ChartConfig = {
   completed: {
     label: "Completed",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-5))",
   },
   planned: {
     label: "Planned",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-2))",
   },
 };
 
