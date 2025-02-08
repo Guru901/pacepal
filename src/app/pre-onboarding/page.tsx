@@ -17,10 +17,12 @@ export default function PreOnboarding() {
     (async () => {
       try {
         setLoading(true);
-        if (localUser?.isOnBoarded) {
-          router.push(`/`);
-        } else {
-          router.push(`/onboarding`);
+        if (localUser) {
+          if (localUser.isOnBoarded) {
+            router.push(`/`);
+          } else {
+            router.push(`/onboarding`);
+          }
         }
       } catch (error) {
         console.error(error);
