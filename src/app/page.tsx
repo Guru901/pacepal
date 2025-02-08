@@ -11,7 +11,7 @@ import { TodosChart } from "./(charts)/todos-chart";
 import { WorkChart } from "./(charts)/work-chart";
 import { MoodChart } from "./(charts)/mood-chart";
 import { Penalty } from "./(charts)/penalty";
-import { OverworkChart } from "./(charts)/overwork-chart"
+import { OverworkChart } from "./(charts)/overwork-chart";
 import { DistractionsChart } from "./(charts)/distractions-chart";
 import { ProductivityChart } from "@/app/(charts)/productivity-chart";
 import { useVersionStore } from "@/store/version-store";
@@ -86,7 +86,6 @@ export default function Dashboard() {
                 selectedVersion={selectedVersion}
               />
             </div>
-
           </div>
           <div className="flex gap-2">
             <DistractionsChart

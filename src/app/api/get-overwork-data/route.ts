@@ -3,9 +3,7 @@ import { Form } from "@/models/form-model";
 import { connectToDB } from "@/lib/db-connect";
 
 export async function GET(request: NextRequest) {
-
   try {
-
     await connectToDB();
     let totalOverWorkHours = 0;
 
@@ -21,14 +19,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        overWork: totalOverWorkHours
-      }
-    })
-
-  }
-  catch (error) {
+        overWork: totalOverWorkHours,
+      },
+    });
+  } catch (error) {
     console.error(error);
   }
-
 }
-

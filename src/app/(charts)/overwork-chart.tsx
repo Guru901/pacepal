@@ -17,7 +17,6 @@ export function OverworkChart({
   userId: string;
   selectedVersion: string;
 }) {
-
   const [loading, setLoading] = useState(true);
   const [overWork, setOverWork] = useState(0);
 
