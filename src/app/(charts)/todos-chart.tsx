@@ -1,5 +1,3 @@
-"use client";
-
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -69,7 +67,7 @@ export function TodosChart({
     }
 
     return data.filter((item) => {
-      if (!item.createdAt) return false; // Ensure createdAt exists
+      if (!item.createdAt) return false;
       const itemDate = new Date(item.createdAt);
       return itemDate >= startDate && itemDate <= now;
     });
@@ -83,7 +81,6 @@ export function TodosChart({
           `/api/get-todos-data?id=${userId}&version=${selectedVersion}`
         );
         if (data.success) {
-          // Map backend keys to expected keys
           const formattedData = data.data.todos.map((item: TodoData) => ({
             createdAt: item.createdAt,
             tasksPlanned: item.tasksPlanned,

@@ -24,7 +24,6 @@ export default function Me() {
   const [isEditingSleep, setIsEditingSleep] = useState(false);
   const [desiredSleepHours, setDesiredSleepHours] = useState("");
 
-  // New state for slots editing
   const [isEditingSlots, setIsEditingSlots] = useState(false);
   const [editableSlots, setEditableSlots] = useState<
     Array<{ name: string; hours: number }>
@@ -94,10 +93,8 @@ export default function Me() {
       alert("Failed to update sleep hours");
     }
   };
-  // New function to handle slot updates
   const handleSaveSlots = async () => {
     try {
-      // Validate slots
       const validSlots = editableSlots.filter(
         (slot) =>
           slot.name.trim() !== "" &&
@@ -137,19 +134,16 @@ export default function Me() {
     }
   };
 
-  // Function to add a new slot
   const handleAddSlot = () => {
     setEditableSlots([...editableSlots, { name: "", hours: 0 }]);
   };
 
-  // Function to remove a slot
   const handleRemoveSlot = (indexToRemove: number) => {
     setEditableSlots(
       editableSlots.filter((_, index) => index !== indexToRemove)
     );
   };
 
-  // Function to update a specific slot
   const handleUpdateSlot = (index: number, field: string, value: unknown) => {
     const updatedSlots = [...editableSlots];
     updatedSlots[index] = {

@@ -1,8 +1,5 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -52,11 +49,9 @@ export function WorkChart({
         );
 
         if (data.success) {
-          // Get desired working hours dynamically
           const desiredHours = data.data.desiredWorkingHours[0];
           setDesiredWorkHrs(desiredHours);
 
-          // Create the final chart data
           const combinedChartData = data.data.forms?.map(
             (form: {
               hoursPlanned: number;
@@ -66,7 +61,6 @@ export function WorkChart({
               const date = new Date(form.createdAt).toLocaleDateString("en-US");
               const dataForDate = { date };
 
-              // For each time period, set the actual and desired hours
               form.hoursWorked.forEach((entry) => {
                 const periodName = entry.name;
 

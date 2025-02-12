@@ -9,7 +9,7 @@ type UserStoreActions = {
     email: string;
     isOnBoarded: boolean;
     versions: {
-      versionName: string; // Added to match user model
+      versionName: string;
       data: {
         slots: {
           name: string;
@@ -26,7 +26,7 @@ type UserStoreActions = {
 export const useUserStore = create<UserStoreActions>()(
   persist(
     (set) => ({
-      user: null, // Initialize user as null to match user model
+      user: null,
       setUser: (user) => set({ user }),
     }),
     {

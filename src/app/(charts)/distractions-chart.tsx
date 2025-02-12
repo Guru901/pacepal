@@ -15,7 +15,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
 
-// Helper function to generate colors dynamically
 function generateColors(count: number) {
   const colors = [];
   for (let i = 0; i < count; i++) {
@@ -65,7 +64,6 @@ export function DistractionsChart({
           `/api/get-distractions-data?id=${userId}&version=${selectedVersion}`
         );
         if (data.success) {
-          // Count the occurrences of each distraction
           const distractionCounts = data.data.distractions.reduce(
             (acc: { [key: string]: number }, distraction: string) => {
               acc[distraction] = (acc[distraction] || 0) + 1;
@@ -83,10 +81,8 @@ export function DistractionsChart({
     })();
   }, [userId, selectedVersion]);
 
-  // Generate dynamic colors based on the number of distractions
   const dynamicColors = generateColors(Object.keys(distractions).length);
 
-  // Modify chart data to include dynamic colors
   const chartData = Object.entries(distractions).map(
     ([name, value], index) => ({
       name,

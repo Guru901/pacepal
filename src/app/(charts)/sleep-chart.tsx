@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
@@ -78,13 +76,11 @@ export function SleepChart({
   useEffect(() => {
     (async () => {
       try {
-        // Fetch the sleep data from the API
         setLoading(true);
         const { data } = await axios.get(
           `/api/get-sleep-data?id=${userId}&version=${selectedVersion}`
         );
         if (data.success) {
-          // Filter and transform the data based on the selected time range
           const filteredData = filterDataByTimeRange(
             data.data.forms,
             timeRange

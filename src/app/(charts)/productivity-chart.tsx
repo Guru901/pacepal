@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -48,7 +46,6 @@ export function ProductivityChart({
           `/api/get-productivity-data?id=${userId}&version=${selectedVersion}`
         );
         if (data.success) {
-          // Set productivity data directly
           setData(
             data.data.productivityData.map((item: { date: string }) => ({
               ...item,
@@ -97,7 +94,7 @@ export function ProductivityChart({
                 axisLine={false}
                 tickMargin={8}
                 minTickGap={32}
-                interval={0} // Ensures all ticks are shown
+                interval={0}
                 tickFormatter={(value) => {
                   const [year, month, day] = value.split("-");
                   return new Date(`${year}-${month}-${day}`).toLocaleDateString(

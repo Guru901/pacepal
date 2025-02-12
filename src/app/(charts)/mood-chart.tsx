@@ -1,5 +1,3 @@
-"use client";
-
 import { LabelList, Pie, PieChart } from "recharts";
 
 import {
@@ -76,7 +74,6 @@ export function MoodChart({
             productive: 0,
           };
 
-          // Count the occurrences of each mood
           data.data.forms.forEach((form: { mood: string }) => {
             const mood = form.mood;
             if (moodCounts.hasOwnProperty(mood)) {
@@ -85,7 +82,6 @@ export function MoodChart({
             }
           });
 
-          // Update the chart data based on the mood counts
           setChartData((prevData) =>
             prevData.map((item) => ({
               ...item,
