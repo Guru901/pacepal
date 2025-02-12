@@ -19,11 +19,12 @@ function generateColors(count: number) {
   const colors = [];
   for (let i = 0; i < count; i++) {
     const hue = (i * 360) / count;
-    const color = `hsl(${hue}, 96.1%, 40.4%)`;
+    const color = `hsl(${hue}, 100%, 70%)`;
     colors.push(color);
   }
   return colors;
 }
+
 export function DistractionsChart({
   userId,
   selectedVersion,
