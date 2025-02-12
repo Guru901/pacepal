@@ -35,8 +35,8 @@ export default function PreOnboarding() {
   return loading ? (
     <h1>Loading...</h1>
   ) : (
-    <div>
-      <h1>Redirecting....</h1>
+    <div className="w-screen h-screen flex items-center justify-center">
+      <h1 className="text-xl">Redirecting....</h1>
     </div>
   );
 }
