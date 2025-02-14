@@ -18,6 +18,11 @@ export function VersionToggle() {
   const { localUser } = useGetUser();
   const { setSelectedVersion, selectedVersion } = useVersionStore();
 
+  function changeVersion(version: string) {
+    localStorage.setItem("selected-version", version);
+    setSelectedVersion(version);
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +34,9 @@ export function VersionToggle() {
         {localUser?.versions.map((version) => (
           <DropdownMenuItem
             key={version.versionName}
-            onClick={() => setSelectedVersion(version.versionName)}
+            onClick={() => {
+              changeVersion(version.versionName);
+            }}
           >
             {version.versionName}
           </DropdownMenuItem>

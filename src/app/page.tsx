@@ -22,6 +22,7 @@ export default function Dashboard() {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { setSelectedVersion } = useVersionStore();
 
   useEffect(() => {
     async function isFormSubmittedFetch() {
@@ -48,6 +49,13 @@ export default function Dashboard() {
       await isFormSubmittedFetch();
     })();
   }, [user?.mongoId, isFormSubmitted]);
+
+  useEffect(() => {
+    const selectedVersion = localStorage.getItem("selected-version");
+    if (selectedVersion) {
+      setSelectedVersion(selectedVersion);
+    }
+  }, []);
 
   if (loading || !user?.id) return <Loader />;
   return (
