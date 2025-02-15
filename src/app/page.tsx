@@ -55,7 +55,7 @@ export default function Dashboard() {
     if (selectedVersion) {
       setSelectedVersion(selectedVersion);
     }
-  }, []);
+  }, [selectedVersion]);
 
   if (loading || !user?.id) return <Loader />;
   return (

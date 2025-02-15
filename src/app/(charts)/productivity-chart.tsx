@@ -49,8 +49,8 @@ export function ProductivityChart({
           setData(
             data.data.productivityData.map((item: { date: string }) => ({
               ...item,
-              date: item.date.split("/").reverse().join("-"), // Convert to YYYY-MM-DD for consistent formatting
-            }))
+              date: item.date.split("/").reverse().join("-"),
+            })).reverse()
           );
         }
       } catch (error) {
