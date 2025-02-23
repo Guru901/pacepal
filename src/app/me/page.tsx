@@ -24,6 +24,8 @@ export default function Me() {
   const [isEditingSleep, setIsEditingSleep] = useState(false);
   const [desiredSleepHours, setDesiredSleepHours] = useState("");
 
+  const [totalHours, setTotalHours] = useState(0);
+
   const [isEditingSlots, setIsEditingSlots] = useState(false);
   const [editableSlots, setEditableSlots] = useState<
     Array<{ name: string; hours: number }>
@@ -58,8 +60,13 @@ export default function Me() {
   }, [localUser, selectedVersion]);
 
   useEffect(() => {
-    console.log(editableSlots);
-  }, [isEditingSlots, editableSlots]);
+    let total = 0;
+    editableSlots.map((slot) => {
+      total = total + slot.hours;
+    });
+
+    setTotalHours(total);
+  }, [editableSlots]);
 
   const handleSaveSleepHours = async () => {
     try {
@@ -309,6 +316,10 @@ export default function Me() {
                       <span>{slot.hours} hours</span>
                     </div>
                   ))}
+                  <div className="flex justify-between pt-2">
+                    <span>Total Working Hours</span>
+                    <span>{totalHours} hours</span>
+                  </div>
                 </div>
               )}
             </div>
