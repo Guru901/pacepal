@@ -20,12 +20,12 @@ import { useRouter } from "next/navigation";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import axios from "axios";
 import useGetUser from "@/hooks/use-get-user";
-import { FormData, formSchema } from "@/lib/schema";
+import { OnboardingFormData, onboardingFormSchema } from "@/lib/schema";
 
 export function OnboardingForm() {
   const [totalSlotHours, setTotalSlotHours] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [formData, setFormData] = useState<OnboardingFormData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
@@ -39,8 +39,8 @@ export function OnboardingForm() {
     watch,
     register,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  } = useForm<OnboardingFormData>({
+    resolver: zodResolver(onboardingFormSchema),
     defaultValues: {
       desiredSleepHours: 8,
       slots: [{ name: "", hours: 0 }],
@@ -65,7 +65,7 @@ export function OnboardingForm() {
     setTotalSlotHours(slotsTotal);
   }, [watchForm]);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: OnboardingFormData) => {
     setFormData(data);
     setIsDialogOpen(true);
   };

@@ -8,7 +8,7 @@ export const slotSchema = z.object({
     .max(24, "Hours cannot exceed 24"),
 });
 
-export const formSchema = z.object({
+export const onboardingFormSchema = z.object({
   desiredSleepHours: z
     .number()
     .min(0, "Sleep hours must be 0 or greater")
@@ -17,7 +17,7 @@ export const formSchema = z.object({
   version: z.string(),
 });
 
-export type FormData = z.infer<typeof formSchema>;
+export type OnboardingFormData = z.infer<typeof onboardingFormSchema>;
 
 export const studySlotSchema = z.object({
   name: z.string().min(1, "Slot name is required"),
