@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
   Card,
   CardContent,
@@ -21,30 +20,7 @@ import useGetUser from "@/hooks/use-get-user";
 import { useRouter } from "next/navigation";
 import { useVersionStore } from "@/store/version-store";
 import { useUserStore } from "@/store/user-store";
-
-const studySlotSchema = z.object({
-  name: z.string().min(1, "Slot name is required"),
-  hours: z
-    .number()
-    .min(0.5, "Study time must be at least 30 minutes")
-    .max(24, "Study time cannot exceed 24 hours"),
-});
-
-const scheduleSchema = z.object({
-  versionName: z
-    .string()
-    .min(1, "Version name is required")
-    .max(50, "Version name must be 50 characters or less"),
-  desiredSleepHours: z
-    .number()
-    .min(4, "Sleep hours must be at least 4")
-    .max(12, "Sleep hours cannot exceed 12"),
-  studySlots: z
-    .array(studySlotSchema)
-    .min(1, "At least one study slot is required"),
-});
-
-type ScheduleFormData = z.infer<typeof scheduleSchema>;
+import { scheduleSchema, ScheduleFormData } from "@/lib/schema";
 
 export default function ScheduleVersionCreator() {
   const [isSubmitting, setIsSubmitting] = useState(false);

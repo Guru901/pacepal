@@ -100,6 +100,7 @@ export default function Me() {
       alert("Failed to update sleep hours");
     }
   };
+
   const handleSaveSlots = async () => {
     try {
       const validSlots = editableSlots.filter(

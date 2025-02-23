@@ -21,11 +21,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useVersionStore } from "@/store/version-store";
 import useGetUser from "@/hooks/use-get-user";
+import { DailyFormData, dailyFormSchema } from "@/lib/schema";
 
 export function DailyForm() {
   const { localUser: user } = useGetUser();
@@ -33,30 +33,12 @@ export function DailyForm() {
 
   const { selectedVersion } = useVersionStore();
 
-  const formSchema = z.object({
-    followedSchedule: z.enum(["yes", "no"]),
-    productivity: z.string().min(1, "Please select a productivity rating"),
-    tasksCompleted: z
-      .number()
-      .int()
-      .min(0, "Tasks completed must be 0 or greater"),
-    tasksPlanned: z.number().int().min(0, "Tasks planned must be 0 or greater"),
-    sleptWell: z.enum(["yes", "no"]),
-    distractions: z.enum(["yes", "no"]),
-    distractionsList: z.string().optional(),
-    mood: z.enum(["happy", "tired", "neutral", "stressed", "productive"]),
-    hoursSlept: z.number().min(0, "Hours slept must be 0 or greater"),
-    hoursWorked: z.array(z.object({ name: z.string(), hours: z.number() })),
-    overWork: z.number().min(0),
-  });
-
-  type FormData = z.infer<typeof formSchema>;
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  } = useForm<DailyFormData>({
+    resolver: zodResolver(dailyFormSchema),
     defaultValues: {
       followedSchedule: "yes",
       productivity: "",
@@ -72,7 +54,7 @@ export function DailyForm() {
     },
   });
 
-  async function onSubmit(formData: FormData) {
+  async function onSubmit(formData: DailyFormData) {
     setIsSubmitting(true);
     if (!user?.mongoId) return;
 
