@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -17,17 +16,7 @@ import {
 } from "@/components/ui/chart";
 import axios from "axios";
 import { Loader } from "@/components/Loading";
-
-const chartConfig = {
-  actual_working_hrs: {
-    label: "Actual Working Hrs",
-    color: "hsl(var(--chart-5))",
-  },
-  desired_working_hrs: {
-    label: "Desired Working Hrs",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+import { workChartConfig } from "@/lib/chart-configs";
 
 export function WorkChart({
   userId,
@@ -117,7 +106,7 @@ export function WorkChart({
                 <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
                   {chartData.length > 0 ? (
                     <ChartContainer
-                      config={chartConfig}
+                      config={workChartConfig}
                       className="aspect-auto h-[250px] w-full"
                     >
                       <AreaChart data={chartData}>

@@ -1,7 +1,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -16,17 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader } from "@/components/Loading";
-
-const chartConfig: ChartConfig = {
-  completed: {
-    label: "Completed",
-    color: "hsl(var(--chart-5))",
-  },
-  planned: {
-    label: "Planned",
-    color: "hsl(var(--chart-2))",
-  },
-};
+import { todosChartConfig } from "@/lib/chart-configs";
 
 type TodoData = {
   createdAt?: string;
@@ -142,7 +131,7 @@ export function TodosChart({
           </SelectContent>
         </Select>
 
-        <ChartContainer config={chartConfig} className="h-[50vh] w-full">
+        <ChartContainer config={todosChartConfig} className="h-[50vh] w-full">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis

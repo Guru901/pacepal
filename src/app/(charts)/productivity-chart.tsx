@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -17,16 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/Loading";
-
-const chartConfig = {
-  views: {
-    label: "Productivity Rating",
-  },
-  productivity: {
-    label: "Productivity",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
+import { productivityChartConfig } from "@/lib/chart-configs";
 
 export function ProductivityChart({
   userId,
@@ -47,10 +37,12 @@ export function ProductivityChart({
         );
         if (data.success) {
           setData(
-            data.data.productivityData.map((item: { date: string }) => ({
-              ...item,
-              date: item.date.split("/").reverse().join("-"),
-            })).reverse()
+            data.data.productivityData
+              .map((item: { date: string }) => ({
+                ...item,
+                date: item.date.split("/").reverse().join("-"),
+              }))
+              .reverse()
           );
         }
       } catch (error) {
@@ -76,7 +68,7 @@ export function ProductivityChart({
           <Loader />
         ) : (
           <ChartContainer
-            config={chartConfig}
+            config={productivityChartConfig}
             className="aspect-auto h-[250px] w-full"
           >
             <BarChart

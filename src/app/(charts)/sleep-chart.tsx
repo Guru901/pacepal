@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -25,17 +24,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import { Loader } from "@/components/Loading";
-
-const chartConfig = {
-  actual_sleeping_hrs: {
-    label: "Actual Sleeping Hrs",
-    color: "hsl(var(--chart-5))",
-  },
-  desired_sleep_hrs: {
-    label: "Desired Sleep Hrs",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+import { sleepChartConfig } from "@/lib/chart-configs";
 
 export function SleepChart({
   userId,
@@ -137,7 +126,7 @@ export function SleepChart({
       ) : (
         <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
           <ChartContainer
-            config={chartConfig}
+            config={sleepChartConfig}
             className="aspect-auto h-[250px] w-full"
           >
             <AreaChart data={chartData}>

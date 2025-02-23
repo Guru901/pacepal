@@ -11,6 +11,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { distractionsChartConfig } from "@/lib/chart-configs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
@@ -36,27 +37,6 @@ export function DistractionsChart({
   const [distractions, setDistractions] = useState<{ [key: string]: number }>(
     {}
   );
-  const chartConfig = {
-    chart: {
-      theme: {
-        light: "transparent",
-        dark: "transparent",
-      },
-    },
-    text: {
-      theme: {
-        light: "currentColor",
-        dark: "currentColor",
-      },
-    },
-    path: {
-      theme: {
-        light: "currentColor",
-        dark: "currentColor",
-      },
-    },
-  };
-
   useEffect(() => {
     (async () => {
       try {
@@ -106,7 +86,7 @@ export function DistractionsChart({
           </CardHeader>
           <CardContent className="flex-1 pb-0">
             <ChartContainer
-              config={chartConfig}
+              config={distractionsChartConfig}
               className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
             >
               <PieChart>

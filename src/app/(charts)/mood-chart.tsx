@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -16,29 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/Loading";
-
-const chartConfig = {
-  happy: {
-    label: "Happy",
-    color: "hsl(var(--chart-1))",
-  },
-  tired: {
-    label: "Tired",
-    color: "hsl(var(--chart-2))",
-  },
-  neutral: {
-    label: "Neutral",
-    color: "hsl(var(--chart-5))",
-  },
-  stressed: {
-    label: "Stressed",
-    color: "hsl(var(--chart-4))",
-  },
-  productive: {
-    label: "Productive",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
+import { moodCharConfig as moodChartConfig } from "@/lib/chart-configs";
 
 export function MoodChart({
   userId,
@@ -111,7 +88,7 @@ export function MoodChart({
       ) : (
         <CardContent className="flex-1 pb-0">
           <ChartContainer
-            config={chartConfig}
+            config={moodChartConfig}
             className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
           >
             <PieChart width={7300} height={250}>
@@ -124,8 +101,8 @@ export function MoodChart({
                   className="fill-background"
                   stroke="none"
                   fontSize={14}
-                  formatter={(value: keyof typeof chartConfig) =>
-                    chartConfig[value]?.label
+                  formatter={(value: keyof typeof moodChartConfig) =>
+                    moodChartConfig[value]?.label
                   }
                 />
               </Pie>
