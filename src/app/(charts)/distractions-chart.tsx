@@ -37,6 +37,7 @@ export function DistractionsChart({
   const [distractions, setDistractions] = useState<{ [key: string]: number }>(
     {}
   );
+
   useEffect(() => {
     (async () => {
       try {
