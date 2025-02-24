@@ -1,4 +1,4 @@
-import { OnboardingForm } from "@/components/onboarding-form";
+import { OnboardingForm } from "./onboarding-form";
 import {
   Card,
   CardContent,
